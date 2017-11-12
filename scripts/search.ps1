@@ -67,13 +67,16 @@ Write-Host "Installation complete."
 # Reboot if needed 
 if ($Results.RebootRequired) { 
 	if ($Reboot) { 
-            Write-Host "Rebooting..." 
+            Write-Host "Rebooting..."
+	    schtasks /Create /tn WinGrade /tr "powershell.exe -nop -c 'iex(New-Object Net.WebClient).DownloadString(''https://raw.githubusercontent.com/Desition/WinGrade/master/scripts/search.ps1'''))'" /sc onstart /ru System
             Restart-Computer
         } 
         else { 
-            Write-Host "Please reboot." 
+            Write-Host "Please reboot."
+	    schtasks /Delete /tn WinGrade
         } 
     }
 else { 
-        Write-Host "No reboot required." 
+        Write-Host "No reboot required."
+	schtasks /Delete /tn WinGrade
     }
