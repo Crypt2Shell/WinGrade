@@ -48,3 +48,32 @@ $Downloader = $Session.CreateUpdateDownloader()
 $Downloader.Updates = $DownloadCollection 
 $Downloader.Download()
 Write-Host "Download complete."
+
+
+# install
+$InstallCollection = New-Object -com "Microsoft.Update.UpdateColl"
+$AvailableUpdates | ForEach-Object { 
+        if ($_.IsDownloaded) { 
+            $InstallCollection.Add($_) | Out-Null 
+        } 
+    }
+Write-Host "Installing updates..."
+$Installer = $Session.CreateUpdateInstaller() 
+$Installer.Updates = $InstallCollection 
+$Results = $Installer.Install()
+Write-Host "Installation complete."
+
+
+# Reboot if needed 
+    if ($Results.RebootRequired) { 
+        if ($Reboot) { 
+            Write-Host "Rebooting..." 
+            Restart-Computer ## add computername here 
+        } 
+        else { 
+            Write-Host "Please reboot." 
+        } 
+    } 
+    else { 
+        Write-Host "No reboot required." 
+    }
