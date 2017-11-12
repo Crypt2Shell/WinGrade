@@ -2,7 +2,7 @@ $AvailableUpdates = @()
 $UpdateIds = @() 
 $UpdateTypes 
 
-
+# Search
 $Session = New-Object -com "Microsoft.Update.Session"
 
 Write-Host "Searching for updates..." 
@@ -35,3 +35,16 @@ if($AvailableUpdates.count -lt 1){
 	Write-Host "No results meet your criteria. Exiting"; 
 	break 
   } 
+
+# Download
+$DownloadCollection = New-Object -com "Microsoft.Update.UpdateColl"
+$AvailableUpdates | ForEach-Object { 
+        if ($_.InstallationBehavior.CanRequestUserInput -ne $TRUE) { 
+            $DownloadCollection.Add($_) | Out-Null 
+            } 
+        }
+Write-Host "Downloading updates..."
+$Downloader = $Session.CreateUpdateDownloader() 
+$Downloader.Updates = $DownloadCollection 
+$Downloader.Download()
+Write-Host "Download complete."
