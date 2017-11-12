@@ -5,7 +5,7 @@ $UpdateTypes
 # Search
 $Session = New-Object -com "Microsoft.Update.Session"
 
-Write-Host "[" -ForeGroundColor Green + "+" + -ForeGroundColor White + "]" + "Searching for updates..." 
+write-host "["; write-host "+"; write-host "]"; Write-Host "Searching for updates..." 
 $Search = $Session.CreateUpdateSearcher()
 $SearchResults = $Search.Search("IsInstalled=0 and IsHidden=0")
 Write-Host "There are " $SearchResults.Updates.Count "TOTAL updates available."
