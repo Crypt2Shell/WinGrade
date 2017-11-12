@@ -1,4 +1,5 @@
 # in pre alpha [verion]
+# only good for some tests
 
 $AvailableUpdates = @() 
 $UpdateIds = @() 
