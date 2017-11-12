@@ -4,7 +4,6 @@ $UpdateTypes
 
 # Search
 $Session = New-Object -com "Microsoft.Update.Session"
-
 Write-Host "Searching for updates..." 
 $Search = $Session.CreateUpdateSearcher()
 $SearchResults = $Search.Search("IsInstalled=0 and IsHidden=0")
