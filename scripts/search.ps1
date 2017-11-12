@@ -65,15 +65,15 @@ Write-Host "Installation complete."
 
 
 # Reboot if needed 
-    if ($Results.RebootRequired) { 
-        if ($Reboot) { 
+if ($Results.RebootRequired) { 
+	if ($Reboot) { 
             Write-Host "Rebooting..." 
             Restart-Computer ## add computername here 
         } 
         else { 
             Write-Host "Please reboot." 
         } 
-    } 
-    else { 
-        Write-Host "No reboot required." 
     }
+else { 
+        Write-Host "No reboot required." 
+}
