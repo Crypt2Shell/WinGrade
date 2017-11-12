@@ -1,3 +1,5 @@
+# in pre alpha [verion]
+
 $AvailableUpdates = @() 
 $UpdateIds = @() 
 $UpdateTypes 
