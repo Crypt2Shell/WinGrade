@@ -35,6 +35,7 @@ if($AvailableUpdates.count -lt 1){
 	break 
   } 
 
+
 # Download
 $DownloadCollection = New-Object -com "Microsoft.Update.UpdateColl"
 $AvailableUpdates | ForEach-Object { 
