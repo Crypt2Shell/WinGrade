@@ -1,4 +1,4 @@
-# in pre alpha [verion]
+# in pre alpha [version]
 # only good for some tests
 
 $AvailableUpdates = @() 
