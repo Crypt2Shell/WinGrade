@@ -8,13 +8,13 @@ function get-update {
     $result = $searcher.Search("IsInstalled=0 and Type='Software'" )
 
     $result.Updates | select Title, IsHidden
-    get-update2
+    get-updateStage2
 }
 
 # ---------- ---------- ---------- --------- --------- #
  # --- --- --- --- --- GET-UPDATE --- --- --- --- --- #
 # ---------- ---------- ---------- --------- --------- #
-function get-update2 {
+function get-updateStage2 {
     [CmdletBinding()]
     param ( 
          [switch]$hidden 
