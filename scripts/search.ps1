@@ -1,4 +1,6 @@
-# --- GET-UPDATE --- #
+# ---------- ---------- ---------- --------- --------- #
+ # --- --- --- --- --- GET-UPDATE --- --- --- --- --- #
+# ---------- ---------- ---------- --------- --------- #
 function get-update {
     Write-Host "searching for Updates ..."
     $session = New-Object -ComObject Microsoft.Update.Session
@@ -9,7 +11,9 @@ function get-update {
     get-update2
 }
 
-# --- GET-UPDATE --- # (updated)
+# ---------- ---------- ---------- --------- --------- #
+ # --- --- --- --- --- GET-UPDATE --- --- --- --- --- #
+# ---------- ---------- ---------- --------- --------- #
 function get-update2 {
     [CmdletBinding()]
     param ( 
@@ -41,8 +45,9 @@ function get-update2 {
 
     }
 }
-
-# --- GET-INSTALLEDUPDATE --- #
+# ---------- ---------- ---------- --------- --------- #
+ # -- --- --- --- GET-INSTALLEDUPDATE --- --- --- --- #
+# ---------- ---------- ---------- --------- --------- #
 function get-installedupdate {
     $session = New-Object -ComObject Microsoft.Update.Session
     $searcher = $session.CreateUpdateSearcher()
@@ -53,8 +58,9 @@ function get-installedupdate {
     install-update
 }
 
-
-# --- INSTALL-UPDATE --- #
+# ---------- ---------- ---------- --------- --------- #
+ # --- --- --- --- INSTALL-UPDATE --- --- --- --- --- #
+# ---------- ---------- ---------- --------- --------- #
 function install-update {
     $session = New-Object -ComObject Microsoft.Update.Session
     $searcher = $session.CreateUpdateSearcher()
