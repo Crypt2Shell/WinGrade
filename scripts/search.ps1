@@ -34,7 +34,7 @@ function get-updateStage2 {
         if ($result.Updates.Count -gt 0){
              $result.Updates | 
              select Title, IsHidden, IsDownloaded, IsMandatory, 
-             IsUninstallable, RebootRequired, Description | ForEach-Object {Write-Host "     "$_.Name.ToString() -ForegroundColor Cyan} 
+             IsUninstallable, RebootRequired, Description
 
              get-installedupdate
 
@@ -53,7 +53,7 @@ function get-installedupdate {
     $searcher = $session.CreateUpdateSearcher()
     $result = $searcher.Search("IsInstalled=1 and Type='Software'" )
 
-    $result.Updates | select Title, LastDeploymentChangeTime | Foreach-Object { Write-Host $_ -ForegroundColor Green}
+    $result.Updates | select Title, LastDeploymentChangeTime
 
     install-update
 }
