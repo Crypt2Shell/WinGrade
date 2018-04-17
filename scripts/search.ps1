@@ -1,85 +1,112 @@
-# in pre alpha [version]
-# only good for some tests
+# --- GET-UPDATE --- #
+function get-update {
+    Write-Host "searching for Updates ..."
+    $session = New-Object -ComObject Microsoft.Update.Session
+    $searcher = $session.CreateUpdateSearcher()
+    $result = $searcher.Search("IsInstalled=0 and Type='Software'" )
 
-$AvailableUpdates = @() 
-$UpdateIds = @() 
-$UpdateTypes 
+    $result.Updates | select Title, IsHidden
+    get-update2
+}
 
-# Search
-$Session = New-Object -com "Microsoft.Update.Session"
-Write-Host "Searching for updates..." 
-$Search = $Session.CreateUpdateSearcher()
-$SearchResults = $Search.Search("IsInstalled=0 and IsHidden=0")
-Write-Host "There are " $SearchResults.Updates.Count "TOTAL updates available."
-$AvailableUpdates = $SearchResults.Updates
-Write-Host "Updates selected for installation"
-$AvailableUpdates | ForEach-Object {
+# --- GET-UPDATE --- # (updated)
+function get-update2 {
+    [CmdletBinding()]
+    param ( 
+         [switch]$hidden 
+    ) 
+    PROCESS{
+        $session = New-Object -ComObject Microsoft.Update.Session
+        $searcher = $session.CreateUpdateSearcher()
 
-	if (($_.InstallationBehavior.CanRequestUserInput) -or ($_.EulaAccepted -eq $FALSE)) { 
-            Write-Host $_.Title " *** Requires user input and will not be installed." -ForegroundColor Yellow 
-            if($ShowCategories) 
-            { 
-                $_.Categories | ForEach-Object {Write-Host "     "$_.Name.ToString() -ForegroundColor Cyan} 
-                 
-            } 
-                 
-        } 
-        else { 
-            Write-Host $_.Title -ForegroundColor Green 
-            if($ShowCategories) 
-            { 
-                $_.Categories | ForEach-Object {Write-Host "     "$_.Name.ToString() -ForegroundColor Cyan} 
-                 
-            } 
-        } 
-    }
-if($AvailableUpdates.count -lt 1){ 
-	Write-Host "No results meet your criteria. Exiting"; 
-	break 
-  } 
-
-
-# Download
-$DownloadCollection = New-Object -com "Microsoft.Update.UpdateColl"
-$AvailableUpdates | ForEach-Object { 
-        if ($_.InstallationBehavior.CanRequestUserInput -ne $TRUE) { 
-            $DownloadCollection.Add($_) | Out-Null 
-            } 
+        # 0 = false & 1 = true
+        if ($hidden){
+             $result = $searcher.Search("IsInstalled=0 and Type='Software' and ISHidden=1" )
         }
-Write-Host "Downloading updates..."
-$Downloader = $Session.CreateUpdateDownloader() 
-$Downloader.Updates = $DownloadCollection 
-$Downloader.Download()
-Write-Host "Download complete."
+        else {
+             $result = $searcher.Search("IsInstalled=0 and Type='Software' and ISHidden=0" )
+        }
 
+        if ($result.Updates.Count -gt 0){
+             $result.Updates | 
+             select Title, IsHidden, IsDownloaded, IsMandatory, 
+             IsUninstallable, RebootRequired, Description | ForEach-Object {Write-Host "     "$_.Name.ToString() -ForegroundColor Cyan} 
 
-# install
-$InstallCollection = New-Object -com "Microsoft.Update.UpdateColl"
-$AvailableUpdates | ForEach-Object { 
-        if ($_.IsDownloaded) { 
-            $InstallCollection.Add($_) | Out-Null 
+             get-installedupdate
+
+        }
+        else {
+             Write-Host "No updates available"
         } 
+
     }
-Write-Host "Installing updates..."
-$Installer = $Session.CreateUpdateInstaller() 
-$Installer.Updates = $InstallCollection 
-$Results = $Installer.Install()
-Write-Host "Installation complete."
+}
+
+# --- GET-INSTALLEDUPDATE --- #
+function get-installedupdate {
+    $session = New-Object -ComObject Microsoft.Update.Session
+    $searcher = $session.CreateUpdateSearcher()
+    $result = $searcher.Search("IsInstalled=1 and Type='Software'" )
+
+    $result.Updates | select Title, LastDeploymentChangeTime | Foreach-Object { Write-Host $_ -ForegroundColor Green}
+
+    install-update
+}
 
 
-# Reboot if needed 
-if ($Results.RebootRequired) { 
-	if ($Reboot) { 
+# --- INSTALL-UPDATE --- #
+function install-update {
+    $session = New-Object -ComObject Microsoft.Update.Session
+    $searcher = $session.CreateUpdateSearcher()
+
+    $result = $searcher.Search("IsInstalled=0 and Type='Software' and ISHidden=0")
+    
+    if ($result.Updates.Count -eq 0) {
+         Write-Host "No updates to install"
+    }
+    else {
+        $result.Updates | select Title
+    }
+
+    $downloads = New-Object -ComObject Microsoft.Update.UpdateColl
+
+    foreach ($update in $result.Updates){
+         $downloads.Add($update)
+    }
+     
+    $downloader = $session.CreateUpdateDownLoader()
+    $downloader.Updates = $downloads
+    $downloader.Download()
+
+    $installs = New-Object -ComObject Microsoft.Update.UpdateColl
+    foreach ($update in $result.Updates){
+         if ($update.IsDownloaded){
+               $installs.Add($update)
+         }
+    }
+
+    $installer = $session.CreateUpdateInstaller()
+    $installer.Updates = $installs
+    $installresult = $installer.Install()
+    $installresult
+
+    # Reboot if needed 
+    if ($installresult.RebootRequired) { 
+	    if ($Reboot) { 
             Write-Host "Rebooting..."
-	    schtasks /Create /tn WinGrade /tr "powershell.exe -nop -c 'iex(New-Object Net.WebClient).DownloadString(''https://raw.githubusercontent.com/Crypt2Shell/WinGrade/blob/master/scripts/search.ps1'''))'" /sc onstart /ru System
+	        schtasks /Create /tn WinGrade /tr "powershell.exe -nop -c 'iex(New-Object Net.WebClient).DownloadString(''https://raw.githubusercontent.com/Crypt2Shell/WinGrade/blob/master/scripts/search.ps1'''))'" /sc onstart /ru System
             Restart-Computer
+            
         } 
         else { 
-            Write-Host "Please reboot."
-	    schtasks /Delete /tn WinGrade
+            Write-Host "Please reboot and start the Program again."
+	        schtasks /Delete /tn WinGrade
         } 
     }
-else { 
+    else { 
         Write-Host "No reboot required."
-	schtasks /Delete /tn WinGrade
+        schtasks /Delete /tn WinGrade
     }
+}
+
+get-update
