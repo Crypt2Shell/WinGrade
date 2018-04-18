@@ -7,9 +7,6 @@ function elevate-privileges {
             Start-Process -FilePath PowerShell.exe -Verb Runas -ArgumentList "iex(New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/scripts/search.ps1')"
 	    Exit
         }
-        else {
-        Write-Host -ForegroundColor Red "This script must be run as Administrator!"
-        }
     }
     else {
     Write-Host -ForegroundColor Green "whoami: Administrator"
