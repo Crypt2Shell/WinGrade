@@ -131,4 +131,4 @@ function install-update {
     }
 }
 
-elevate-privilege
+elevate-privileges
