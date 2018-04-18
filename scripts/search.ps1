@@ -35,8 +35,8 @@ function get-updateStage2 {
              $result.Updates | 
              select Title, IsHidden, IsDownloaded, IsMandatory, 
              IsUninstallable, RebootRequired, Description
-
-             get-installedupdate
+	     
+	     install-update
 
         }
         else {
@@ -55,8 +55,6 @@ function get-installedupdate {
     $result = $searcher.Search("IsInstalled=1 and Type='Software'" )
 
     $result.Updates | select Title, LastDeploymentChangeTime
-
-    install-update
 }
 
 # ---------- ---------- ---------- --------- --------- #
@@ -102,17 +100,18 @@ function install-update {
     if ($installresult.RebootRequired) { 
 	    if ($Reboot) { 
             Write-Host "Rebooting..."
-	        schtasks /Create /tn WinGrade /tr "powershell.exe -nop -c 'iex(New-Object Net.WebClient).DownloadString(''https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/scripts/search.ps1'''))'" /sc onstart /ru System
+	    schtasks /Create /tn WinGrade /tr "powershell.exe -nop -c 'iex(New-Object Net.WebClient).DownloadString(''https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/scripts/search.ps1'''))'" /sc onstart /ru System
             Restart-Computer
             
         } 
         else { 
             Write-Host "Please reboot and start the Program again."
-	        schtasks /Delete /tn WinGrade
+	    schtasks /Delete /tn WinGrade
         } 
     }
     else { 
         Write-Host "No reboot required."
+	get-installedupdate
         schtasks /Delete /tn WinGrade
         control.exe /name Microsoft.WindowsUpdate
     }
