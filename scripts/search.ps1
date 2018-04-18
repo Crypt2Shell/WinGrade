@@ -41,6 +41,7 @@ function get-updateStage2 {
         }
         else {
              Write-Host "No updates available"
+             control.exe /name Microsoft.WindowsUpdate
         } 
 
     }
@@ -69,6 +70,7 @@ function install-update {
     
     if ($result.Updates.Count -eq 0) {
          Write-Host "No updates to install"
+         control.exe /name Microsoft.WindowsUpdate
     }
     else {
         $result.Updates | select Title
@@ -112,6 +114,7 @@ function install-update {
     else { 
         Write-Host "No reboot required."
         schtasks /Delete /tn WinGrade
+        control.exe /name Microsoft.WindowsUpdate
     }
 }
 
