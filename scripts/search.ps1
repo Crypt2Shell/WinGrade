@@ -11,7 +11,7 @@ function elevate-privileges {
         }
     }
     else {
-    Write-Host -ForegroundColor Green "getid: Administrator"
+    Write-Host -ForegroundColor Green "whoami: Administrator"
     get-update
     }
 }
