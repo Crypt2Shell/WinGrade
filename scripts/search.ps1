@@ -72,6 +72,7 @@ function install-update {
     }
     else {
         $result.Updates | select Title
+	Write-Host "install Updates..."
     }
 
     $downloads = New-Object -ComObject Microsoft.Update.UpdateColl
