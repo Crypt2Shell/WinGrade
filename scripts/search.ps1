@@ -1,4 +1,21 @@
 # ---------- ---------- ---------- --------- --------- #
+ # --- --- --- --- Elevate-Privileges --- --- --- --- #
+# ---------- ---------- ---------- --------- --------- #
+function elevate-privileges {
+    if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
+        if ([int](Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty BuildNumber) -ge 6000) {
+            Start-Process -FilePath PowerShell.exe -Verb Runas -ArgumentList "iex(New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/scripts/search.ps1')"
+        }
+        else {
+        Write-Host -ForegroundColor Red "This script must be run as Administrator!"
+        }
+    }
+    else {
+    Write-Host -ForegroundColor Green "getid: Administrator"
+    get-update
+    }
+}
+# ---------- ---------- ---------- --------- --------- #
  # --- --- --- --- --- GET-UPDATE --- --- --- --- --- #
 # ---------- ---------- ---------- --------- --------- #
 function get-update {
@@ -17,7 +34,7 @@ function get-update {
 function get-updateStage2 {
     [CmdletBinding()]
     param ( 
-         [switch]$hidden 
+        [switch]$hidden 
     ) 
     PROCESS{
         $session = New-Object -ComObject Microsoft.Update.Session
@@ -25,25 +42,24 @@ function get-updateStage2 {
 
         # 0 = false & 1 = true
         if ($hidden){
-             $result = $searcher.Search("IsInstalled=0 and Type='Software' and ISHidden=1" )
+            $result = $searcher.Search("IsInstalled=0 and Type='Software' and ISHidden=1" )
         }
         else {
-             $result = $searcher.Search("IsInstalled=0 and Type='Software' and ISHidden=0" )
+            $result = $searcher.Search("IsInstalled=0 and Type='Software' and ISHidden=0" )
         }
 
         if ($result.Updates.Count -gt 0){
-             $result.Updates | 
-             select Title, IsHidden, IsDownloaded, IsMandatory, 
-             IsUninstallable, RebootRequired, Description
+            $result.Updates | 
+            select Title, IsHidden, IsDownloaded, IsMandatory, 
+            IsUninstallable, RebootRequired, Description
 	     
-	     install-update
+	        install-update
 
         }
         else {
              Write-Host "No updates available"
              control.exe /name Microsoft.WindowsUpdate
         } 
-
     }
 }
 # ---------- ---------- ---------- --------- --------- #
@@ -76,7 +92,6 @@ function install-update {
     }
 
     $downloads = New-Object -ComObject Microsoft.Update.UpdateColl
-
     foreach ($update in $result.Updates){
          $downloads.Add($update)
     }
@@ -102,21 +117,20 @@ function install-update {
     if ($installresult.RebootRequired) { 
 	    if ($Reboot) { 
             Write-Host "Rebooting..."
-	    schtasks /Create /tn WinGrade /tr "powershell.exe -nop -c 'iex(New-Object Net.WebClient).DownloadString(''https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/scripts/search.ps1'''))'" /sc onstart /ru System
+	        schtasks /Create /tn WinGrade /tr "powershell.exe -nop -c 'iex(New-Object Net.WebClient).DownloadString(''https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/scripts/search.ps1'''))'" /sc onstart /ru System
             Restart-Computer
-            
         } 
         else { 
             Write-Host "Please reboot and start the Program again."
-	    schtasks /Delete /tn WinGrade
+	        schtasks /Delete /tn WinGrade
         } 
     }
     else { 
         Write-Host "No reboot required."
-	get-installedupdate
+	    get-installedupdate
         schtasks /Delete /tn WinGrade
         control.exe /name Microsoft.WindowsUpdate
     }
 }
 
-get-update
+elevate-privileges
