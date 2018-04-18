@@ -72,7 +72,7 @@ function install-update {
     }
     else {
         $result.Updates | select Title
-	Write-Host "install Updates..."
+	Write-Host "downloading Updates..."
     }
 
     $downloads = New-Object -ComObject Microsoft.Update.UpdateColl
@@ -92,6 +92,7 @@ function install-update {
          }
     }
 
+    Write-Host "installing Updates..."
     $installer = $session.CreateUpdateInstaller()
     $installer.Updates = $installs
     $installresult = $installer.Install()
