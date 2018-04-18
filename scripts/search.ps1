@@ -114,17 +114,17 @@ function install-update {
     # Reboot if needed 
     if ($installresult.RebootRequired) { 
 	    if ($Reboot) { 
-            Write-Host "Rebooting..."
+            Write-Host -ForegroundColor Cyan "Rebooting..."
 	        schtasks /Create /tn WinGrade /tr "powershell.exe -nop -c 'iex(New-Object Net.WebClient).DownloadString(''https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/scripts/search.ps1'''))'" /sc onstart /ru System
             Restart-Computer
         } 
         else { 
-            Write-Host "Please reboot and start the Program again."
+            Write-Host -ForegroundColor Yellow "Please reboot and start the Program again."
 	        schtasks /Delete /tn WinGrade
         } 
     }
     else { 
-        Write-Host "No reboot required."
+        Write-Host -ForegroundColor Green "No reboot required."
 	    get-installedupdate
         schtasks /Delete /tn WinGrade
         control.exe /name Microsoft.WindowsUpdate
