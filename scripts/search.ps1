@@ -16,7 +16,7 @@ function elevate-privileges {
  # --- --- --- --- --- GET-UPDATE --- --- --- --- --- #
 # ---------- ---------- ---------- --------- --------- #
 function get-update {
-    whoami | Where-Object {Write-Host -ForegroundColor Green $_}
+    whoami /priv | Where-Object {Write-Host -ForegroundColor Green $_}
     Write-Host "`nsearching for Updates ..."
     $session = New-Object -ComObject Microsoft.Update.Session
     $searcher = $session.CreateUpdateSearcher()
