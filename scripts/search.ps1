@@ -9,6 +9,8 @@ function elevate-privileges {
         }
     }
     else {
+    whoami /priv | Foreach-Object {Write-Host $_}
+    whoami | Foreach-Object {Write-Host -ForegroundColor Green $_}
     get-update
     }
 }
@@ -16,7 +18,6 @@ function elevate-privileges {
  # --- --- --- --- --- GET-UPDATE --- --- --- --- --- #
 # ---------- ---------- ---------- --------- --------- #
 function get-update {
-    whoami /priv | Foreach-Object {Write-Host -ForegroundColor Green $_}
     Write-Host "`nsearching for Updates ..."
     $session = New-Object -ComObject Microsoft.Update.Session
     $searcher = $session.CreateUpdateSearcher()
@@ -81,12 +82,12 @@ function install-update {
     $result = $searcher.Search("IsInstalled=0 and Type='Software' and ISHidden=0")
     
     if ($result.Updates.Count -eq 0) {
-         Write-Host -ForegroundColor Cyan "\tNo updates available."
+         Write-Host -ForegroundColor Cyan "`tNo updates available."
          control.exe /name Microsoft.WindowsUpdate
     }
     else {
         $result.Updates | select Title
-	Write-Host "\ndownloading Updates..."
+	Write-Host "`ndownloading Updates..."
     }
 
     $downloads = New-Object -ComObject Microsoft.Update.UpdateColl
@@ -105,7 +106,7 @@ function install-update {
          }
     }
 
-    Write-Host "\ninstalling Updates..."
+    Write-Host "`ninstalling Updates..."
     $installer = $session.CreateUpdateInstaller()
     $installer.Updates = $installs
     $installresult = $installer.Install()
@@ -114,13 +115,13 @@ function install-update {
     # Reboot if needed 
     if ($installresult.RebootRequired) { 
 	    if ($Reboot) { 
-            Write-Host -ForegroundColor Cyan "\nRebooting..."
+            Write-Host -ForegroundColor Cyan "`nRebooting..."
 	        schtasks /Create /tn WinGrade /tr "powershell.exe -nop -c 'iex(New-Object Net.WebClient).DownloadString(''https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/scripts/search.ps1'''))'" /sc onstart /ru System
             Restart-Computer
         }
     }
     else { 
-        Write-Host -ForegroundColor Green "\nNo reboot required."
+        Write-Host -ForegroundColor Green "`nNo reboot required."
 	    get-installedupdate
         schtasks /Delete /tn WinGrade
         control.exe /name Microsoft.WindowsUpdate
