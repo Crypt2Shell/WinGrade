@@ -11,7 +11,7 @@ function elevate-privileges {
     else {
         whoami /priv | Foreach-Object {Write-Host $_}
         whoami /user | Foreach-Object {Write-Host -ForegroundColor Green $_}
-        get-update
+        get-updateStage2
     }
 }
 # ---------- ---------- ---------- --------- --------- #
@@ -23,10 +23,9 @@ function get-update {
     $searcher = $session.CreateUpdateSearcher()
     $result = $searcher.Search("IsInstalled=0 and Type='Software'" )
 
-    $result.Updates | Foreach-Object {Write-Host -ForegroundColor Green select Title, IsHidden}
+    $result.Updates | select Title, IsHidden, IsInstalled | Out-String | Write-Host -ForegroundColor Magenta
     get-updateStage2
 }
-
 # ---------- ---------- ---------- --------- --------- #
  # --- --- --- --- --- GET-UPDATE --- --- --- --- --- #
 # ---------- ---------- ---------- --------- --------- #
@@ -36,6 +35,7 @@ function get-updateStage2 {
         [switch]$hidden 
     ) 
     PROCESS{
+        Write-Host "`nsearching for Updates ..."
         $session = New-Object -ComObject Microsoft.Update.Session
         $searcher = $session.CreateUpdateSearcher()
 
@@ -48,10 +48,8 @@ function get-updateStage2 {
         }
 
         if ($result.Updates.Count -gt 0){
-            $result.Updates | 
-            select Title, IsHidden, IsDownloaded, IsMandatory, 
-            IsUninstallable, RebootRequired, Description
-	     
+            $result.Updates | select Title, IsHidden, IsDownloaded, IsMandatory,
+                                     IsUninstallable, RebootRequired, Description | Out-String | Write-Host -ForegroundColor DarkMagenta
 	        install-update
 
         }
@@ -61,17 +59,6 @@ function get-updateStage2 {
         } 
     }
 }
-# ---------- ---------- ---------- --------- --------- #
- # -- --- --- --- GET-INSTALLEDUPDATE --- --- --- --- #
-# ---------- ---------- ---------- --------- --------- #
-function get-installedupdate {
-    $session = New-Object -ComObject Microsoft.Update.Session
-    $searcher = $session.CreateUpdateSearcher()
-    $result = $searcher.Search("IsInstalled=1 and Type='Software'" )
-
-    $result.Updates | select Title, LastDeploymentChangeTime
-}
-
 # ---------- ---------- ---------- --------- --------- #
  # --- --- --- --- INSTALL-UPDATE --- --- --- --- --- #
 # ---------- ---------- ---------- --------- --------- #
@@ -86,7 +73,7 @@ function install-update {
          control.exe /name Microsoft.WindowsUpdate
     }
     else {
-        $result.Updates | select Title
+        $result.Updates | select Title | Out-String | Write-Host -ForegroundColor Magenta
 	Write-Host "`ndownloading Updates..."
     }
 
@@ -101,8 +88,10 @@ function install-update {
 
     $installs = New-Object -ComObject Microsoft.Update.UpdateColl
     foreach ($update in $result.Updates){
-         if ($update.IsDownloaded){
-               $installs.Add($update)
+        
+        if ($update.IsDownloaded){
+            for($i=0; $i -le $update; $i++){Write-Progress -Activity "Download Updates ..." -Status "Progress ->" -PercentComplete ($i/$update.count*100)}
+            $installs.Add($update)
          }
     }
 
@@ -112,7 +101,24 @@ function install-update {
     $installresult = $installer.Install()
     $installresult
 
-    # Reboot if needed 
+    get-installedupdate
+}
+# ---------- ---------- ---------- --------- --------- #
+ # -- --- --- --- GET-INSTALLEDUPDATE --- --- --- --- #
+# ---------- ---------- ---------- --------- --------- #
+function get-installedupdate {
+    $session = New-Object -ComObject Microsoft.Update.Session
+    $searcher = $session.CreateUpdateSearcher()
+    $result = $searcher.Search("IsInstalled=1 and Type='Software'" )
+
+    $result.Updates | select Title, IsInstalled, LastDeploymentChangeTime | Out-String | Write-Host -ForegroundColor DarkCyan
+    Write-Host -ForegroundColor Yellow "[!] Waiting ...[15s]"; sleep -s 15
+    get-reboot
+}
+# ---------- ---------- ---------- --------- --------- #
+ # --- --- --- --- --- GET-REBOOT --- --- --- --- --- #
+# ---------- ---------- ---------- --------- --------- #
+function get-reboot {
     if ($installresult.RebootRequired) { 
 	    if ($Reboot) { 
             Write-Host -ForegroundColor Cyan "`nRebooting..."
@@ -128,5 +134,4 @@ function install-update {
         get-update
     }
 }
-
 elevate-privileges
