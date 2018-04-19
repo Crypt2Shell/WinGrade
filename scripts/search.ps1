@@ -9,7 +9,7 @@ function elevate-privileges {
         }
     }
     else {
-    whoami | Write-Host -ForegroundColor Green $_
+    whoami | Where-Object {Write-Host -ForegroundColor Green $_}
     get-update
     }
 }
