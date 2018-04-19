@@ -5,11 +5,11 @@ function elevate-privileges {
     if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
         if ([int](Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty BuildNumber) -ge 6000) {
             Start-Process -FilePath PowerShell.exe -Verb Runas -ArgumentList "iex(New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/scripts/search.ps1')"
-	    Exit
+            Exit
         }
     }
     else {
-    Write-Host -ForegroundColor Green "whoami: Administrator"
+    whoami | Write-Host -ForegroundColor Green $_
     get-update
     }
 }
@@ -17,7 +17,7 @@ function elevate-privileges {
  # --- --- --- --- --- GET-UPDATE --- --- --- --- --- #
 # ---------- ---------- ---------- --------- --------- #
 function get-update {
-    Write-Host "searching for Updates ..."
+    Write-Host "\nsearching for Updates ..."
     $session = New-Object -ComObject Microsoft.Update.Session
     $searcher = $session.CreateUpdateSearcher()
     $result = $searcher.Search("IsInstalled=0 and Type='Software'" )
@@ -55,7 +55,7 @@ function get-updateStage2 {
 
         }
         else {
-             Write-Host "No updates available"
+             Write-Host -ForegroundColor Cyan "\tNo updates available."
              control.exe /name Microsoft.WindowsUpdate
         } 
     }
@@ -81,12 +81,12 @@ function install-update {
     $result = $searcher.Search("IsInstalled=0 and Type='Software' and ISHidden=0")
     
     if ($result.Updates.Count -eq 0) {
-         Write-Host "No updates to install"
+         Write-Host -ForegroundColor Cyan "\tNo updates available."
          control.exe /name Microsoft.WindowsUpdate
     }
     else {
         $result.Updates | select Title
-	Write-Host "downloading Updates..."
+	Write-Host "\ndownloading Updates..."
     }
 
     $downloads = New-Object -ComObject Microsoft.Update.UpdateColl
@@ -105,7 +105,7 @@ function install-update {
          }
     }
 
-    Write-Host "installing Updates..."
+    Write-Host "\ninstalling Updates..."
     $installer = $session.CreateUpdateInstaller()
     $installer.Updates = $installs
     $installresult = $installer.Install()
@@ -114,20 +114,17 @@ function install-update {
     # Reboot if needed 
     if ($installresult.RebootRequired) { 
 	    if ($Reboot) { 
-            Write-Host -ForegroundColor Cyan "Rebooting..."
+            Write-Host -ForegroundColor Cyan "\nRebooting..."
 	        schtasks /Create /tn WinGrade /tr "powershell.exe -nop -c 'iex(New-Object Net.WebClient).DownloadString(''https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/scripts/search.ps1'''))'" /sc onstart /ru System
             Restart-Computer
-        } 
-        else { 
-            Write-Host -ForegroundColor Yellow "Please reboot and start the Program again."
-	        schtasks /Delete /tn WinGrade
-        } 
+        }
     }
     else { 
-        Write-Host -ForegroundColor Green "No reboot required."
+        Write-Host -ForegroundColor Green "\nNo reboot required."
 	    get-installedupdate
         schtasks /Delete /tn WinGrade
         control.exe /name Microsoft.WindowsUpdate
+        get-update
     }
 }
 
