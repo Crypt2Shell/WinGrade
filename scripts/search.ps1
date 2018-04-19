@@ -9,7 +9,6 @@ function elevate-privileges {
         }
     }
     else {
-    whoami | Where-Object {Write-Host -ForegroundColor Green $_}
     get-update
     }
 }
@@ -17,7 +16,8 @@ function elevate-privileges {
  # --- --- --- --- --- GET-UPDATE --- --- --- --- --- #
 # ---------- ---------- ---------- --------- --------- #
 function get-update {
-    Write-Host "\nsearching for Updates ..."
+    whoami | Where-Object {Write-Host -ForegroundColor Green $_}
+    Write-Host "`nsearching for Updates ..."
     $session = New-Object -ComObject Microsoft.Update.Session
     $searcher = $session.CreateUpdateSearcher()
     $result = $searcher.Search("IsInstalled=0 and Type='Software'" )
@@ -55,7 +55,7 @@ function get-updateStage2 {
 
         }
         else {
-             Write-Host -ForegroundColor Cyan "\tNo updates available."
+             Write-Host -ForegroundColor Cyan "`tNo updates available."
              control.exe /name Microsoft.WindowsUpdate
         } 
     }
