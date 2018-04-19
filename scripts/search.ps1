@@ -23,7 +23,7 @@ function get-update {
     $searcher = $session.CreateUpdateSearcher()
     $result = $searcher.Search("IsInstalled=0 and Type='Software'" )
 
-    $result.Updates | select Title, IsHidden
+    $result.Updates | Foreach-Object {Write-Host -ForegroundColor Green select Title, IsHidden}
     get-updateStage2
 }
 
