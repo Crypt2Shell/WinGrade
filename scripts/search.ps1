@@ -79,7 +79,8 @@ function install-update {
 
     $downloads = New-Object -ComObject Microsoft.Update.UpdateColl
     foreach ($update in $result.Updates){
-         $downloads.Add($update)
+        $downloads.Add($update)
+        for($i=0; $i -le $downloads.count; $i++){Write-Progress -Activity "Download Updates ..." -Status "Progress ->" -PercentComplete ($i/$downloads.count*100)}
     }
      
     $downloader = $session.CreateUpdateDownLoader()
@@ -88,9 +89,7 @@ function install-update {
 
     $installs = New-Object -ComObject Microsoft.Update.UpdateColl
     foreach ($update in $result.Updates){
-        
         if ($update.IsDownloaded){
-            for($i=0; $i -le $update; $i++){Write-Progress -Activity "Download Updates ..." -Status "Progress ->" -PercentComplete ($i/$update.count*100)}
             $installs.Add($update)
          }
     }
