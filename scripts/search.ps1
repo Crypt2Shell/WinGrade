@@ -2,16 +2,22 @@
  # --- --- --- --- Elevate-Privileges --- --- --- --- #
 # ---------- ---------- ---------- --------- --------- #
 function elevate-privileges {
-    if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
-        if ([int](Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty BuildNumber) -ge 6000) {
-            Start-Process -FilePath PowerShell.exe -Verb Runas -ArgumentList "iex(New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/scripts/search.ps1')"
-            Exit
+    try {
+        if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
+            if ([int](Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty BuildNumber) -ge 6000) {
+                Start-Process -FilePath PowerShell.exe -Verb Runas -ArgumentList "iex(New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/scripts/search.ps1')"
+                Exit
+            }
+        }
+        else {
+            whoami /priv | Foreach-Object {Write-Host $_}
+            whoami /user | Foreach-Object {Write-Host -ForegroundColor Green $_}
+            get-updateStage2
         }
     }
-    else {
-        whoami /priv | Foreach-Object {Write-Host $_}
-        whoami /user | Foreach-Object {Write-Host -ForegroundColor Green $_}
-        get-updateStage2
+    Catch {
+        Start-Process -FilePath PowerShell.exe -Verb Runas -ArgumentList "iex(New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/scripts/search.ps1')"
+        Exit
     }
 }
 # ---------- ---------- ---------- --------- --------- #
@@ -79,8 +85,8 @@ function install-update {
 
     $downloads = New-Object -ComObject Microsoft.Update.UpdateColl
     foreach ($update in $result.Updates){
+        Write-Progress -Activity "Download Updates ..." -Status ($update.title) -PercentComplete ([int]($update.count/$result.Updates.count*100)) -CurrentOperation $downloads.count
         $downloads.Add($update)
-        for($i=0; $i -le $downloads.count; $i++){Write-Progress -Activity "Download Updates ..." -Status "Progress ->" -PercentComplete ($i/$downloads.count*100)}
     }
      
     $downloader = $session.CreateUpdateDownLoader()
@@ -119,11 +125,9 @@ function get-installedupdate {
 # ---------- ---------- ---------- --------- --------- #
 function get-reboot {
     if ($installresult.RebootRequired) { 
-	    if ($Reboot) { 
-            Write-Host -ForegroundColor Cyan "`nRebooting..."
-	        schtasks /Create /tn WinGrade /tr "powershell.exe -nop -c 'iex(New-Object Net.WebClient).DownloadString(''https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/scripts/search.ps1'''))'" /sc onstart /ru System
-            Restart-Computer
-        }
+        Write-Host -ForegroundColor Cyan "`nRebooting..."
+	    schtasks /Create /tn WinGrade /tr "powershell.exe -nop -c 'iex(New-Object Net.WebClient).DownloadString(''https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/scripts/search.ps1'''))'" /sc onstart /ru System
+        Restart-Computer -Force
     }
     else { 
         Write-Host -ForegroundColor Green "`nNo reboot required."
