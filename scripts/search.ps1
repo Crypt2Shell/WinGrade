@@ -10,7 +10,7 @@ function elevate-privileges {
     }
     else {
         whoami /priv | Foreach-Object {Write-Host $_}
-        whoami | Foreach-Object {Write-Host -ForegroundColor Green $_}
+        whoami /user | Foreach-Object {Write-Host -ForegroundColor Green $_}
         get-update
     }
 }
