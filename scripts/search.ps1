@@ -93,7 +93,7 @@ function install-update {
         $downloader.Download()|out-null
     }
     Write-Host "`ninstalling Updates..."
-    for ($NUPdate=0; $update -in $result.Updates; $NUpdate++){
+    for ($NUpdate=0; $update -in $result.Updates; $NUpdate++){
         Write-Progress -Activity "Installing Updates ..." -Status ($update.title) -PercentComplete([int]($NUpdate/$result.Updates.count*100)) -CurrentOperation [$NUpdate/$result.Updates.count]
 
         $installs = New-Object -ComObject Microsoft.Update.UpdateColl
