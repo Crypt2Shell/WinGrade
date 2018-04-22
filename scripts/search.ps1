@@ -82,10 +82,7 @@ function install-update {
         $result.Updates | select Title | Out-String | Write-Host -ForegroundColor Magenta
 	Write-Host "`ndownloading Updates..."
     }
-
-    
-    $NUpdate = 1
-    foreach ($update in $result.Updates){
+    for($NUpdate = 0; $update in $result.Updates; NUpdate++){
         Write-Progress -Activity "Download Updates ..." -Status ($update.title) -PercentComplete ([int]($NUpdate/$result.Updates.count*100)) -CurrentOperation $NUpdate
         
         $downloads = New-Object -ComObject Microsoft.Update.UpdateColl
@@ -94,8 +91,6 @@ function install-update {
         $downloader = $session.CreateUpdateDownLoader()
         $downloader.Updates = $downloads
         $downloader.Download()
-
-        $NUpdate++
     }
      
     
