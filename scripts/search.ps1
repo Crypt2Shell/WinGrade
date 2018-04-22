@@ -12,7 +12,7 @@ function elevate-privileges {
         else {
             whoami /priv | Foreach-Object {Write-Host $_}
             whoami /user | Foreach-Object {Write-Host -ForegroundColor Green $_}
-            get-updateStage2
+            get-update
         }
     }
     Catch {
