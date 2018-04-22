@@ -45,7 +45,6 @@ function get-updateStage2 {
         $session = New-Object -ComObject Microsoft.Update.Session
         $searcher = $session.CreateUpdateSearcher()
 
-        # 0 = false & 1 = true
         if ($hidden){
             $result = $searcher.Search("IsInstalled=0 and Type='Software' and ISHidden=1" )
         }
