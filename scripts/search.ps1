@@ -24,7 +24,7 @@ function elevate-privileges {
  # --- --- --- --- --- GET-UPDATE --- --- --- --- --- #
 # ---------- ---------- ---------- --------- --------- #
 function get-update {
-    Write-Host "`nsearching for Updates ..."| out-string | Write-Host -ForegoundColor Yellow "[Stage 1]"
+    Write-Host "`nsearching for Updates ...[Stage 1]"
     $session = New-Object -ComObject Microsoft.Update.Session
     $searcher = $session.CreateUpdateSearcher()
     $result = $searcher.Search("IsInstalled=0 and Type='Software'" )
