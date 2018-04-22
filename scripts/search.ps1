@@ -129,7 +129,6 @@ function get-reboot {
     }
     else { 
         Write-Host -ForegroundColor Green "`nNo reboot required."
-	    get-installedupdate
         schtasks /Delete /tn WinGrade
         control.exe /name Microsoft.WindowsUpdate
         get-update
