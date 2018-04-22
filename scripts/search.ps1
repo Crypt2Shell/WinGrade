@@ -24,7 +24,7 @@ function elevate-privileges {
  # --- --- --- --- --- GET-UPDATE --- --- --- --- --- #
 # ---------- ---------- ---------- --------- --------- #
 function get-update {
-    Write-Host "`nsearching for Updates ..."
+    Write-Host "`nsearching for Updates ..."| out-string | Write-Host -ForegoundColor  "[Stage 1]"
     $session = New-Object -ComObject Microsoft.Update.Session
     $searcher = $session.CreateUpdateSearcher()
     $result = $searcher.Search("IsInstalled=0 and Type='Software'" )
@@ -41,7 +41,7 @@ function get-updateStage2 {
         [switch]$hidden 
     ) 
     PROCESS{
-        Write-Host "`nsearching for Updates ..."
+        Write-Host "`nsearching for Updates ...[Stage 2]"
         $session = New-Object -ComObject Microsoft.Update.Session
         $searcher = $session.CreateUpdateSearcher()
 
@@ -86,7 +86,6 @@ function install-update {
         
         $downloads = New-Object -ComObject Microsoft.Update.UpdateColl
         $downloads.Add($update)
-
         $downloader = $session.CreateUpdateDownLoader()
         $downloader.Updates = $downloads
         $downloader.Download()|out-null
@@ -96,8 +95,9 @@ function install-update {
         Write-Progress -Activity "Installing Updates ..." -Status ($update.title) -PercentComplete([int]($NUpdate/$result.Updates.count*100)) -CurrentOperation [$NUpdate/$result.Updates.count]
 
         $installs = New-Object -ComObject Microsoft.Update.UpdateColl
-        $installs.Add($update)|out-null
-    
+        if ($update.IsDownloaded){
+            $installs.Add($update)|out-null
+        }
         $installer = $session.CreateUpdateInstaller()
         $installer.Updates = $installs
         $installresult = $installer.Install()
