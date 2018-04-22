@@ -82,32 +82,32 @@ function install-update {
         $result.Updates | select Title | Out-String | Write-Host -ForegroundColor Magenta
 	Write-Host "`ndownloading Updates..."
     }
-    for ($NUpdate = 0; $update in $result.Updates; NUpdate++){
-        Write-Progress -Activity "Download Updates ..." -Status ($update.title) -PercentComplete ([int]($NUpdate/$result.Updates.count*100)) -CurrentOperation [$NUpdate/$result.Updates.count]
+    $NUpdate = 1;
+    foreach ($update in $result.Updates){
+        Write-Progress -Activity "Installing Updates ..." -Status ($update.title) -PercentComplete ([int]($NUpdate/$result.Updates.count*100)) -CurrentOperation [$NUpdate/$result.Updates.count]
         
         $downloads = New-Object -ComObject Microsoft.Update.UpdateColl
         $downloads.Add($update)
 
         $downloader = $session.CreateUpdateDownLoader()
         $downloader.Updates = $downloads
-        $downloader.Download()
-    }
-     
-    
+        $downloader.Download()|out-null
 
-    $installs = New-Object -ComObject Microsoft.Update.UpdateColl
-    foreach ($update in $result.Updates){
-        if ($update.IsDownloaded){
-            $installs.Add($update)
-         }
+        $NUpdate++
     }
-
     Write-Host "`ninstalling Updates..."
-    $installer = $session.CreateUpdateInstaller()
-    $installer.Updates = $installs
-    $installresult = $installer.Install()
-    $installresult
+    $NUpdate = 1
+    foreach ($update in $result.Updates){
+        Write-Progress -Activity "Installing Updates ..." -Status ($update.title) -PercentComplete([int]($NUpdate/$result.Updates.count*100)) -CurrentOperation [$NUpdate/$result.Updates.count]
 
+        $installs = New-Object -ComObject Microsoft.Update.UpdateColl
+        $installs.Add($update)|out-null
+    
+        $installer = $session.CreateUpdateInstaller()
+        $installer.Updates = $installs
+        $installresult = $installer.Install()
+        $installresult
+    }
     get-installedupdate
 }
 # ---------- ---------- ---------- --------- --------- #
