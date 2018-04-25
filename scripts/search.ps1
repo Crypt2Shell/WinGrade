@@ -79,13 +79,13 @@ function install-update {
     }
     else {
         $result.Updates | select Title | Out-String | Write-Host -ForegroundColor Magenta
-	Write-Host "`ndownloading Updates..."
     }
+    Write-Host "`ndownloading Updates..."
     $NumUp=0
-    $downloads = New-Object -ComObject Microsoft.Update.UpdateColl
     foreach ($update in $result.Updates){
         Write-Progress -Activity "Installing Updates ..." -Status ($update.title) -PercentComplete ([int]($NumUp/$result.Updates.count*100)) -CurrentOperation [$NumUp/$result.Updates.count]
         
+	$downloads = New-Object -ComObject Microsoft.Update.UpdateColl
         $downloads.Add($update)
         $downloader = $session.CreateUpdateDownLoader()
         $downloader.Updates = $downloads
@@ -95,10 +95,10 @@ function install-update {
     }
     Write-Host "`ninstalling Updates..."
     $NumUp=0
-    $installs = New-Object -ComObject Microsoft.Update.UpdateColl
     foreach ($update in $result.Updates){
         Write-Progress -Activity "Installing Updates ..." -Status ($update.title) -PercentComplete([int]($NumUp/$result.Updates.count*100)) -CurrentOperation [$NumUp/$result.Updates.count]
 	
+	$installs = New-Object -ComObject Microsoft.Update.UpdateColl
         if ($update.IsDownloaded){
             $installs.Add($update)|out-null
         }
