@@ -136,8 +136,8 @@ function get-reboot {
         Write-Host -ForegroundColor Green "`nNo reboot required."
         schtasks /Delete /tn WinGrade
         control.exe /name Microsoft.WindowsUpdate
+	cmd /c pause|out-null
         get-update
     }
 }
 elevate-privileges
-cmd /c pause|out-null
