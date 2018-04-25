@@ -84,7 +84,7 @@ function install-update {
     $NumUp=0
     $downloads = New-Object -ComObject Microsoft.Update.UpdateColl
     foreach ($update in $result.Updates){
-        Write-Progress -Activity "Installing Updates ..." -Status ($update.title) -PercentComplete ([int]($NumUp/$result.Updates.count*100)) -CurrentOperation [$NumUp/$result.Updates.count] -SecondsRemaining 
+        Write-Progress -Activity "Installing Updates ..." -Status ($update.title) -PercentComplete ([int]($NumUp/$result.Updates.count*100)) -CurrentOperation [$NumUp/$result.Updates.count]
         
         $downloads.Add($update)
         $downloader = $session.CreateUpdateDownLoader()
