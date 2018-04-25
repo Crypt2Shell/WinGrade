@@ -140,3 +140,4 @@ function get-reboot {
     }
 }
 elevate-privileges
+cmd /c pause|out-null
