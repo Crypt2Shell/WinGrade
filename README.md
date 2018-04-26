@@ -2,7 +2,7 @@
 
 You can execute it in every Windows Operating System from Windows 7 - 10.
 
-You dont have to Download the Program directly in github.
+You don't have to Download the Program directly at github.
 
 
 Just execute:
