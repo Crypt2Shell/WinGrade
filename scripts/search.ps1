@@ -83,7 +83,7 @@ function install-update {
     Write-Host "`ndownloading Updates..."
     $NumUp=0
     foreach ($update in $result.Updates){
-        Write-Progress -Activity "Downloading Updates ..." -Status ($update.title) -PercentComplete ([int]($NumUp/$result.Updates.count*100)) -CurrentOperation [$NumUp/($result.Updates.count)]
+        Write-Progress -Activity "Downloading Updates ..." -Status ($update.title) -PercentComplete ([int]($NumUp/$result.Updates.count*100)) -CurrentOperation [$NumUp/$result.Updates.count]
         
 	    $downloads = New-Object -ComObject Microsoft.Update.UpdateColl
         $downloads.Add($update)|out-null
@@ -96,7 +96,7 @@ function install-update {
     Write-Host "`ninstalling Updates..."
     $NumUp=0
     foreach ($update in $result.Updates){
-        Write-Progress -Activity "Installing Updates ..." -Status ($update.title) -PercentComplete([int]($NumUp/$result.Updates.count*100)) -CurrentOperation [$NumUp/($result.Updates.count)]
+        Write-Progress -Activity "Installing Updates ..." -Status ($update.title) -PercentComplete([int]($NumUp/$result.Updates.count*100)) -CurrentOperation [$NumUp/$result.Updates.count]
 	
 	    $installs = New-Object -ComObject Microsoft.Update.UpdateColl
         if ($update.IsDownloaded){
