@@ -60,7 +60,6 @@ function get-updateStage2 {
         }
         else {
              Write-Host -ForegroundColor Cyan "`tNo updates available."
-             control.exe /name Microsoft.WindowsUpdate
         } 
     }
 }
@@ -75,7 +74,6 @@ function install-update {
     
     if ($result.Updates.Count -eq 0) {
          Write-Host -ForegroundColor Cyan "`tNo updates available."
-         control.exe /name Microsoft.WindowsUpdate
     }
     else {
         $result.Updates | select Title | Out-String | Write-Host -ForegroundColor Magenta
@@ -129,13 +127,12 @@ function get-installedupdate {
 function get-reboot {
     if ($installresult.RebootRequired) { 
         Write-Host -ForegroundColor Cyan "`nRebooting..."
-	    schtasks /Create /tn WinGrade /tr "powershell.exe -nop -c 'iex(New-Object Net.WebClient).DownloadString(''https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/scripts/search.ps1'''))'" /sc onstart /ru System
+	    schtasks /Create /tn WinGrade /tr "powershell.exe -nop -c $down=New-Object Net.WebClient;$down.Headers['User-Agent'] = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/525.19 (KHTML, like Gecko) Chrome/1.0.154.53 Safari/525.19';$down.DownloadString(''https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/scripts/search.ps1''')|iex" /sc onstart /ru System
         Restart-Computer -Force
     }
     else { 
         Write-Host -ForegroundColor Green "`nNo reboot required."
         schtasks /Delete /tn WinGrade
-        control.exe /name Microsoft.WindowsUpdate
         get-update
     }
 }
