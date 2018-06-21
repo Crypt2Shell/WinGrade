@@ -125,15 +125,15 @@ function get-installedupdate {
  # --- --- --- --- --- GET-REBOOT --- --- --- --- --- #
 # ---------- ---------- ---------- --------- --------- #
 function get-reboot {
-    if ($installresult.RebootRequired) { 
+    #if ($installresult.RebootRequired) { 
         Write-Host -ForegroundColor Cyan "`nRebooting..."
 	schtasks /create /tn WinGrade /tr "powershell.exe 'iex((new-object net.webclient).DownloadString(''https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/scripts/search.ps1'''))'" /sc onstart /ru System
         Restart-Computer -Force
-    }
-    else { 
-        Write-Host -ForegroundColor Green "`nNo reboot required."
-        schtasks /Delete /tn WinGrade
-        get-update
-    }
+    #}
+    #else { 
+        #Write-Host -ForegroundColor Green "`nNo reboot required."
+        #schtasks /Delete /tn WinGrade
+        #get-update
+    #}
 }
 elevate-privileges
