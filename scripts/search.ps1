@@ -78,7 +78,7 @@ function install-update {
         $downloads.Add($update)|out-null
         $downloader = $session.CreateUpdateDownLoader()
         $downloader.Updates = $downloads
-        $downloader.Download()
+        $downloader.Download() #| Foreach-Object {$_ -replace "2", "."} | Write-Host -ForegroundColor Green -NoNewline|Format-Wide
 	
 	$NumUp++
     }
@@ -94,7 +94,7 @@ function install-update {
         $installer = $session.CreateUpdateInstaller()
         $installer.Updates = $installs
         $installresult = $installer.Install()
-        $installresult
+        $installresult #| Foreach-Object {$_ -replace "2", "."} | Write-Host -ForegroundColor Green -NoNewline|Format-Wide
 	
 	$NumUp++
     }
