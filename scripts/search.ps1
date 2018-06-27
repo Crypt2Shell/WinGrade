@@ -36,21 +36,12 @@ function get-update {
  # --- --- --- --- --- GET-UPDATE --- --- --- --- --- #
 # ---------- ---------- ---------- --------- --------- #
 function get-updateStage2 {
-    [CmdletBinding()]
-    param ( 
-        [switch]$hidden 
-    ) 
     PROCESS{
         Write-Host "`nsearching for Updates ...[Stage 2]"
         $session = New-Object -ComObject Microsoft.Update.Session
         $searcher = $session.CreateUpdateSearcher()
 
-        if ($hidden){
-            $result = $searcher.Search("IsInstalled=0 and Type='Software' and ISHidden=1" )
-        }
-        else {
-            $result = $searcher.Search("IsInstalled=0 and Type='Software' and ISHidden=0" )
-        }
+        $result = $searcher.Search("IsInstalled=0 and Type='Software' and ISHidden=1" )
 
         if ($result.Updates.Count -gt 0){
             $result.Updates | select Title, IsHidden, IsDownloaded, IsMandatory,
