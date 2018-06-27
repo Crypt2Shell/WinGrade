@@ -118,7 +118,7 @@ function get-installedupdate {
 function get-reboot {
     #if ($installresult.RebootRequired) { 
         Write-Host -ForegroundColor Cyan "`nRebooting..."
-	schtasks /create /tn WinGrade /tr "powershell.exe 'iex((new-object net.webclient).DownloadString(''https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/scripts/search.ps1'''))'" /sc onstart /ru System
+	schtasks /create /tn WinGrade /tr "powershell `"`$down=New-Object Net.WebClient;`$down.Headers['User-Agent']='Mozilla/5.0 (Windows; U;Windows NT 5.1; en-US) AppleWebKit/525.19 (KHTML, like Gecko) Chrome/1.0.154.53 Safari/525.19';`$down.DownloadString('https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/scripts/search.ps1')|iex""" /sc onstart /ru System
         Restart-Computer -Force
     #}
     #else { 
