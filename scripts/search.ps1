@@ -66,7 +66,7 @@ function install-update {
     
     if ($result.Updates.Count -eq 0) {
          Write-Host -ForegroundColor Cyan "`tNo updates available."
-	 get-reboot
+	 get-installedupdate
     }
     else {
         $result.Updates | select Title | Out-String | Write-Host -ForegroundColor Magenta
