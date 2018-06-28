@@ -118,7 +118,7 @@ function get-installedupdate {
  # --- --- --- --- --- GET-REBOOT --- --- --- --- --- #
 # ---------- ---------- ---------- --------- --------- #
 function get-reboot {
-    $key = Get-Item "HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired" -ErrorAction Ignore
+    $key = Get-Item "HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired" -ErrorAction SilentlyContinue
     if($key -ne $null) {
         Write-Host -ForegroundColor Cyan "`nRebooting..."
 	schtasks /create /tn WinGrade /tr "powershell `"`$down=New-Object Net.WebClient;`$down.Headers['User-Agent']='Mozilla/5.0 (Windows; U;Windows NT 5.1; en-US) AppleWebKit/525.19 (KHTML, like Gecko) Chrome/1.0.154.53 Safari/525.19';`$down.DownloadString('https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/scripts/search.ps1')|iex""" /sc onstart /ru System
