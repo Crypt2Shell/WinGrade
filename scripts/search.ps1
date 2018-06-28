@@ -110,22 +110,23 @@ function get-installedupdate {
     $result = $searcher.Search("IsInstalled=1 and Type='Software'" )
 
     $result.Updates | select Title, IsInstalled, LastDeploymentChangeTime | Out-String | Write-Host -ForegroundColor DarkCyan
-    write-host "["-nonewline; write-host "!" -ForegroundColor Yellow -nonewline; write-host "]"-nonewline; Write-Host -ForegroundColor Yellow " Waiting ...[15s]" -NoNewline; sleep -s 15
+    write-host "["-nonewline; write-host "!" -ForegroundColor Yellow -nonewline; write-host "]"-nonewline; Write-Host " Waiting ...[15s]" -NoNewline; sleep -s 15
     get-reboot
 }
 # ---------- ---------- ---------- --------- --------- #
  # --- --- --- --- --- GET-REBOOT --- --- --- --- --- #
 # ---------- ---------- ---------- --------- --------- #
 function get-reboot {
-    #if ($installresult.RebootRequired) { 
+    $key = Get-Item "HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired" -ErrorAction Ignore
+    if($key -ne $null) {
         Write-Host -ForegroundColor Cyan "`nRebooting..."
 	schtasks /create /tn WinGrade /tr "powershell `"`$down=New-Object Net.WebClient;`$down.Headers['User-Agent']='Mozilla/5.0 (Windows; U;Windows NT 5.1; en-US) AppleWebKit/525.19 (KHTML, like Gecko) Chrome/1.0.154.53 Safari/525.19';`$down.DownloadString('https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/scripts/search.ps1')|iex""" /sc onstart /ru System
         Restart-Computer -Force
-    #}
-    #else { 
-        #Write-Host -ForegroundColor Green "`nNo reboot required."
-        #schtasks /Delete /tn WinGrade
-        #get-update
-    #}
+    }
+    else { 
+        Write-Host -ForegroundColor Green "`nNo reboot required."
+        schtasks /Delete /tn WinGrade
+        elevate-privileges
+    }
 }
 elevate-privileges
