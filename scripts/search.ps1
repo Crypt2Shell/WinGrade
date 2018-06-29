@@ -50,7 +50,7 @@ function get-updateStage2 {
 
         }
         else {
-             Write-Host -ForegroundColor Cyan "`tNo [Hidden] updates available."
+             Write-Host -ForegroundColor Cyan "`tNo [Hidden] updates available!"
 	     install-update
         } 
     }
