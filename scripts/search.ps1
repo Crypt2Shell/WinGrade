@@ -121,7 +121,7 @@ function get-reboot {
     $key = Get-Item "HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired" -ErrorAction SilentlyContinue
     if($key -ne $null) {
         Write-Host -ForegroundColor Cyan "`nRebooting..."
-	    $action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument "$down=New-Object Net.WebClient;$down.Headers['User-Agent']='Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/525.19 (KHTML, like Gecko) Chrome/1.0.154.53 Safari/525.19';$down.DownloadString('https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/scripts/search.ps1')|iex"
+	    $action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument "`$down=New-Object Net.WebClient;`$down.Headers['User-Agent']='Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/525.19 (KHTML, like Gecko) Chrome/1.0.154.53 Safari/525.19';`$down.DownloadString('https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/scripts/search.ps1')|iex"
         $trigger = New-ScheduledTaskTrigger -AtStartup -RandomDelay 00:00:30
         $settings = New-ScheduledTaskSettingsSet -Compatibility Win7
         $principal = New-ScheduledTaskPrincipal -UserId SYSTEM -LogonType ServiceAccount -RunLevel Highest
