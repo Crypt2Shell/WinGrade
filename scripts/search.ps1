@@ -33,7 +33,7 @@ function banner {
     $user        = $sid.Translate([System.Security.Principal.NTAccount])
     $computer    = gwmi Win32_ComputerSystem
     $network     = gwmi Win32_NetworkAdapterConfiguration
-    try{$ipAddresses = ($network | where IPAddress |% { $_.IPAddress[0] }) -join ", " -ErrorAction SilentlyContinue}Catch{}
+    try{$ipAddresses = ($network | where IPAddress |% { $_.IPAddress[0] }) -join ", "}Catch{}
                                         
          write-host "         ...::::::..." -ForegroundColor Red
         write-host "        :::::::::::::::" -ForegroundColor Red -NoNewline;write-host "                     Uptime:            " -ForegroundColor Gray -NoNewline;write-host "$($uptime.Days)d $($uptime.Hours)h $($uptime.Minutes)m $($uptime.Seconds)s" -ForegroundColor White;                 
