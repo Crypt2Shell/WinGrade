@@ -35,6 +35,8 @@ function banner {
     $network     = gwmi Win32_NetworkAdapterConfiguration
     $ipAddresses = ($network | where IPAddress |% { $_.IPAddress[0] }) -join ", "
     
+    if !($($Host.Version) -gt "2.0") { whoami /priv | Foreach-Object {Write-Host $_};whoami /user | Foreach-Object {Write-Host -ForegroundColor Green $_};get-update }
+    
          write-host "\n\n         ...::::::..." -ForegroundColor Red                   
         write-host "        :::::::::::::::" -ForegroundColor Red                 
        write-host "       .::::::::::::::." -ForegroundColor Red -NoNewline;write-host "  :.            ." -ForegroundColor Green -NoNewline;write-host "    Uptime:            " -ForegroundColor Gray -NoNewline;write-host "$($uptime.Days)d $($uptime.Hours)h $($uptime.Minutes)m $($uptime.Seconds)s" -ForegroundColor White;
