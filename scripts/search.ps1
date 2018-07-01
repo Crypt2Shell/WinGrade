@@ -23,7 +23,7 @@ function elevate-privileges {
  # --- --- --- --- --- Banner --- --- --- --- --- --- #
 # ---------- ---------- ---------- --------- --------- #
 function banner {
-    if (!($($Host.Version) -gt "2.0")) { whoami /priv | Foreach-Object {Write-Host $_};whoami /user | Foreach-Object {Write-Host -ForegroundColor Green $_};get-update }
+    #if (!($($Host.Version) -gt "2.0")) { whoami /priv | Foreach-Object {Write-Host $_};whoami /user | Foreach-Object {Write-Host -ForegroundColor Green $_};get-update }
     
     $processor   = gwmi Win32_Processor
     $display     = gwmi Win32_DisplayConfiguration
@@ -35,7 +35,7 @@ function banner {
     $user        = $sid.Translate([System.Security.Principal.NTAccount])
     $computer    = gwmi Win32_ComputerSystem
     $network     = gwmi Win32_NetworkAdapterConfiguration
-    $ipAddresses = ($network | where IPAddress |% { $_.IPAddress[0] }) -join ", "
+    #$ipAddresses = ($network | where IPAddress |% { $_.IPAddress[0] }) -join ", "
     
          write-host "`n         ...::::::..." -ForegroundColor Red                   
         write-host "        :::::::::::::::" -ForegroundColor Red                 
