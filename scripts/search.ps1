@@ -35,7 +35,7 @@ function banner {
     $network     = gwmi Win32_NetworkAdapterConfiguration
     $ipAddresses = ($network | where IPAddress |% { $_.IPAddress[0] }) -join ", "
     
-    if !($($Host.Version) -gt "2.0") { whoami /priv | Foreach-Object {Write-Host $_};whoami /user | Foreach-Object {Write-Host -ForegroundColor Green $_};get-update }
+    if (!($($Host.Version) -gt "2.0")) { whoami /priv | Foreach-Object {Write-Host $_};whoami /user | Foreach-Object {Write-Host -ForegroundColor Green $_};get-update }
     
          write-host "\n\n         ...::::::..." -ForegroundColor Red                   
         write-host "        :::::::::::::::" -ForegroundColor Red                 
@@ -80,7 +80,7 @@ function get-updateStage2 {
 
         $result = $searcher.Search("IsInstalled=0 and Type='Software' and ISHidden=1" )
 
-        if ($result.Updates.Count -gt 0){
+        if ($result.Updates.Count -gt 0) {
             $result.Updates | select Title, IsHidden, IsDownloaded, IsMandatory,
                                      IsUninstallable, RebootRequired, Description | Out-String | Write-Host -ForegroundColor DarkMagenta
 	        install-update
