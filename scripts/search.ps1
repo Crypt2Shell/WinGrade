@@ -161,7 +161,7 @@ function get-reboot {
     }
     else { 
         Write-Host -ForegroundColor Green "`nNo reboot required."
-        del "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\WinGrade.ps1"
+        try{del "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\WinGrade.ps1"}Catch{}
         elevate-privileges
     }
 }
