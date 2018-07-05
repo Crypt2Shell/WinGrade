@@ -3,6 +3,7 @@
 # ---------- ---------- ---------- --------- --------- #
 function elevate-privileges {
     try {
+    	$exitproc = 0
         if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
             if ([int](Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty BuildNumber) -ge 6000) {
                 Start-Process -FilePath PowerShell.exe -Verb Runas -ArgumentList "`$down=New-Object Net.WebClient;`$down.Headers['User-Agent']='Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/525.19 (KHTML, like Gecko) Chrome/1.0.154.53 Safari/525.19';`$down.DownloadString('https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/scripts/search.ps1')|iex"
@@ -100,7 +101,11 @@ function install-update {
     $result = $searcher.Search("IsInstalled=0 and Type='Software' and ISHidden=0")
     
     if ($result.Updates.Count -eq 0) {
+    	 $exitproc++
          Write-Host -ForegroundColor Cyan "`tNo updates available."
+	 if $exitproc < 10 {
+	    Exit
+	 }
 	 get-installedupdate
     }
     else {
