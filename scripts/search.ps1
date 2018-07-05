@@ -80,7 +80,7 @@ function get-updateStage2 {
 
         if ($result.Updates.Count -gt 0) {
             $result.Updates | select Title, IsHidden, IsDownloaded, IsMandatory,
-                                     IsUninstallable, RebootRequired, Description | Out-String | Write-Host -ForegroundColor DarkMagenta
+                                     IsUninstallable, RebootRequired, Description | Out-String | Write-Host -ForegroundColor Magenta
 	        install-update
 
         }
