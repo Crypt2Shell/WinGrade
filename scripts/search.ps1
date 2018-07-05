@@ -101,12 +101,12 @@ function install-update {
     $result = $searcher.Search("IsInstalled=0 and Type='Software' and ISHidden=0")
     
     if ($result.Updates.Count -eq 0) {
-    	 $exitproc++
-         Write-Host -ForegroundColor Cyan "`tNo updates available."
-	 if $exitproc < 10 {
-	    Exit
-	 }
-	 get-installedupdate
+        $exitproc++
+        Write-Host -ForegroundColor Cyan "`tNo updates available."
+	    if ($exitproc -lt 10) {
+	        Exit
+	    }
+	    get-installedupdate
     }
     else {
         $result.Updates | select Title | Out-String | Write-Host -ForegroundColor Magenta
