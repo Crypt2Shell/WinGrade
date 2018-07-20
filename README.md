@@ -3,7 +3,6 @@
 You can execute it in every Windows Operating System from Windows 7 - 10.
 
 You don't have to Download the Program directly at github.
-[x]
 
 Just execute [CMD]:
 ```powershell
@@ -23,7 +22,7 @@ Tested on following Operating Systems:
 
 |   System        |  x64  |  x86  |
 | :---            | :---: | :---: |
-| Windows 10      |  [x]  |  [ ]  |
+| Windows 10      |  [x]  |  [ ] \(Optional)  |
 | Windows 8.1     |  [x]  |  [ ]  |
 | Windows 8       |  [ ]  |  [ ]  |
 | Windows 7       |  [x]  |  [ ]  |
