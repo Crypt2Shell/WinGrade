@@ -22,10 +22,10 @@ Tested on following Operating Systems:
 
 |   System        |  x64  |  x86  |
 | :---            | :---: | :---: |
-| Windows 10      |  [x]  |  [ ]  |
-| Windows 8.1     |  [x]  |  [ ]  |
-| Windows 8       |  [ ]  |  [ ]  |
-| Windows 7       |  [x]  |  [ ]  |
-| Windows Vista   |  [ ]  |  [ ]  |
+| Windows 10      |  <ul><li>- [x] item1</li></ul>  |  <ul><li>- [ ] item1</li></ul>  |
+| Windows 8.1     |  <ul><li>- [x] item1</li></ul>  |  <ul><li>- [ ] item1</li></ul>  |
+| Windows 8       |  <ul><li>- [ ] item1</li></ul>  |  <ul><li>- [ ] item1</li></ul>  |
+| Windows 7       |  <ul><li>- [x] item1</li></ul>  |  <ul><li>- [ ] item1</li></ul>  |
+| Windows Vista   |  <ul><li>- [ ] item1</li></ul>  |  <ul><li>- [ ] item1</li></ul>  |
 
 This Script is still in the early Alpha release!!! And has some bugs
