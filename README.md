@@ -6,7 +6,7 @@ You don't have to Download the Program directly at github.
 
 
 Just execute [CMD]:
-```
+```powershell
 powershell "iex(New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/scripts/search.ps1')"
 ```
 or
