@@ -12,7 +12,6 @@ function elevate-privileges {
         }
         else {
             #whoami /priv | Foreach-Object {Write-Host $_}
-            $exitproc = 0
             banner
         }
     }
