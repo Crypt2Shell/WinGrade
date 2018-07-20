@@ -104,7 +104,7 @@ function install-update {
     
     if ($result.Updates.Count -eq 0) {
         Write-Host -ForegroundColor Cyan "`tNo updates available."
-	    if ($exitproc -eq 10) {
+	    if ($exitproc -eq 5) {
 	        Exit
 	    }
         $exitproc++
