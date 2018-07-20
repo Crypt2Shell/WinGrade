@@ -22,7 +22,7 @@ Tested on following Operating Systems:
 
 |   System        |  x64  |  x86  |
 | :---            | :---: | :---: |
-| Windows 10      |  [x]  |  [ ] \(Optional)  |
+| Windows 10      |  - [x]  |  [ ]  |
 | Windows 8.1     |  [x]  |  [ ]  |
 | Windows 8       |  [ ]  |  [ ]  |
 | Windows 7       |  [x]  |  [ ]  |
