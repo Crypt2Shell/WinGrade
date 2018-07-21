@@ -168,7 +168,7 @@ function get-reboot {
     }
     else { 
         Write-Host -ForegroundColor Green "`nNo reboot required."
-        try{del "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\WinGrade.bat"}Catch{}
+        del "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\WinGrade.bat"|out-null
         elevate-privileges
     }
 }
