@@ -73,11 +73,6 @@ function get-update {
  # --- --- --- --- INSTALL-UPDATE --- --- --- --- --- #
 # ---------- ---------- ---------- --------- --------- #
 function install-update {
-    #$session = New-Object -ComObject Microsoft.Update.Session
-    #$searcher = $session.CreateUpdateSearcher()
-
-    #$result = $searcher.Search("IsInstalled=0 and Type='Software' and ISHidden=0")
-    
     if ($result.Updates.Count -eq 0) {
         Write-Host -ForegroundColor Cyan "`tNo updates available."
 	    if ($exitproc -eq 5) {
@@ -89,41 +84,42 @@ function install-update {
     else {
         $result.Updates | select Title | Out-String | Write-Host -ForegroundColor Magenta
     }
+
     Write-Host "`ndownloading Updates..."
     $NumUp=0
     foreach ($update in $result.Updates){
         Write-Progress -Activity "Downloading Updates ..." -Status ($update.title) -PercentComplete ([int]($NumUp/$result.Updates.count*100)) -CurrentOperation "| [ $($NumUp)/$($result.Updates.count) ] | [ $([int]($NumUp/$result.Updates.count*100))% ] |"
         
 	$downloads.EulaAccepted
-    	if(-not $downloads.EulaAccepted){
-        	Write-Host "Accepting EULA for $downloads" -ForegroundColor Yellow
-        	$downloads.AcceptEula()}
+    if(-not $downloads.EulaAccepted){
+        Write-Host "Accepting EULA for $downloads" -ForegroundColor Yellow
+        $downloads.AcceptEula()
+    }
 	
 	$downloads = New-Object -ComObject Microsoft.Update.UpdateColl
-        $downloads.Add($update)|out-null
-        $downloader = $session.CreateUpdateDownLoader()
-        $downloader.Updates = $downloads
-        $downloader.Download() #| Foreach-Object {$_ -replace "2", "."} | Write-Host -ForegroundColor Green -NoNewline|Format-Wide
-	
-	$downloads.Clear()
+    $downloads.Add($update)|out-null
+    $downloader = $session.CreateUpdateDownLoader()
+    $downloader.Updates = $downloads
+    $downloader.Download() #| Foreach-Object {$_ -replace "2", "."} | Write-Host -ForegroundColor Green -NoNewline|Format-Wide
 	
 	$NumUp++
     }
+
     Write-Host "`ninstalling Updates..."
     $NumUp=0
     foreach ($update in $result.Updates){ 
         Write-Progress -Activity "Installing Updates ..." -Status ($update.title) -PercentComplete([int]($NumUp/$result.Updates.count*100)) -CurrentOperation "| [ $($NumUp)/$($result.Updates.count) ] | [ $([int]($NumUp/$result.Updates.count*100))% ] |"
 	
-	$installs = New-Object -ComObject Microsoft.Update.UpdateColl
+	    $installs = New-Object -ComObject Microsoft.Update.UpdateColl
+
         if ($update.IsDownloaded){
             $installs.Add($update)|out-null
         }
+
         $installer = $session.CreateUpdateInstaller()
         $installer.Updates = $installs
         $installresult = $installer.Install()
         $installresult #| Foreach-Object {$_ -replace "2", "."} | Write-Host -ForegroundColor Green -NoNewline|Format-Wide
-	
-	$installer.Clear()
 	
 	$NumUp++
     }
@@ -158,4 +154,5 @@ function get-reboot {
         elevate-privileges
     }
 }
-elevate-privileges
+banner
+#elevate-privileges
