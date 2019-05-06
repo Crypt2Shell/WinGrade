@@ -116,8 +116,11 @@ function install-update {
     $NumUp=0
     foreach ($update in $result.Updates){
         Write-Progress -Activity "Downloading Updates ..." -Status ($update.title) -PercentComplete ([int]($NumUp/$result.Updates.count*100)) -CurrentOperation "| [ $($NumUp)/$($result.Updates.count) ] | [ $([int]($NumUp/$result.Updates.count*100))% ] |"
-        
-	    $downloads = New-Object -ComObject Microsoft.Update.UpdateColl
+        $downloads.EulaAccepted
+    	if(-not $downloads.EulaAccepted){
+        	Write-Host "Accepting EULA for $downloads" -ForegroundColor Yellow
+        	$downloads.AcceptEula()}
+	$downloads = New-Object -ComObject Microsoft.Update.UpdateColl
         $downloads.Add($update)|out-null
         $downloader = $session.CreateUpdateDownLoader()
         $downloader.Updates = $downloads
