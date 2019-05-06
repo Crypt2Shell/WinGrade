@@ -154,5 +154,4 @@ function get-reboot {
         elevate-privileges
     }
 }
-banner
-#elevate-privileges
+elevate-privileges
