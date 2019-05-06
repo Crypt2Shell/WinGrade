@@ -26,6 +26,5 @@ Tested on following Operating Systems:
 |         Windows 8.1       |  <ul><li>- [x] ✓</li></ul>  |  <ul><li>- [ ] ✘</li></ul>  |
 |         Windows 8         |  <ul><li>- [ ] ✘</li></ul>  |  <ul><li>- [ ] ✘</li></ul>  |
 |         Windows 7         |  <ul><li>- [x] ✓</li></ul>  |  <ul><li>- [ ] ✘</li></ul>  |
-|         Windows Vista     |  <ul><li>- [ ] ✘</li></ul>  |  <ul><li>- [ ] ✘</li></ul>  |
 
 This Script is still in the early Alpha release!!! And has some bugs
