@@ -67,39 +67,16 @@ function get-update {
     $result = $searcher.Search("IsInstalled=0 and Type='Software'" )
 
     $result.Updates | select Title, IsHidden, IsInstalled | Out-String | Write-Host -ForegroundColor Magenta
-    get-updateStage2
-}
-# ---------- ---------- ---------- --------- --------- #
- # --- --- --- --- --- GET-UPDATE --- --- --- --- --- #
-# ---------- ---------- ---------- --------- --------- #
-function get-updateStage2 {
-    PROCESS{
-        Write-Host "`nsearching for Updates ...[Stage 2]"
-        $session = New-Object -ComObject Microsoft.Update.Session
-        $searcher = $session.CreateUpdateSearcher()
-
-        $result = $searcher.Search("IsInstalled=0 and Type='Software' and ISHidden=1" )
-
-        if ($result.Updates.Count -gt 0) {
-            $result.Updates | select Title, IsHidden, IsDownloaded, IsMandatory,
-                                     IsUninstallable, RebootRequired, Description | Out-String | Write-Host -ForegroundColor Magenta
-	        install-update
-
-        }
-        else {
-             Write-Host -ForegroundColor Cyan "`tNo [Hidden] updates available."
-	     install-update
-        } 
-    }
+    install-update
 }
 # ---------- ---------- ---------- --------- --------- #
  # --- --- --- --- INSTALL-UPDATE --- --- --- --- --- #
 # ---------- ---------- ---------- --------- --------- #
 function install-update {
-    $session = New-Object -ComObject Microsoft.Update.Session
-    $searcher = $session.CreateUpdateSearcher()
+    #$session = New-Object -ComObject Microsoft.Update.Session
+    #$searcher = $session.CreateUpdateSearcher()
 
-    $result = $searcher.Search("IsInstalled=0 and Type='Software' and ISHidden=0")
+    #$result = $searcher.Search("IsInstalled=0 and Type='Software' and ISHidden=0")
     
     if ($result.Updates.Count -eq 0) {
         Write-Host -ForegroundColor Cyan "`tNo updates available."
