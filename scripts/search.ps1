@@ -90,12 +90,11 @@ function install-update {
     $NumUp=0
     foreach ($update in $result.Updates){
         Write-Progress -Activity "Downloading Updates ..." -Status ($update.title) -PercentComplete ([int]($NumUp/$result.Updates.count*100)) -CurrentOperation "| [ $($NumUp)/$($result.Updates.count) ] | [ $([int]($NumUp/$result.Updates.count*100))% ] |"
-        
-	#$result.Updates.EulaAccepted
-    #if(-not $result.Updates.EulaAccepted){
-     #   Write-Host "Accepting EULA for $results.Updates" -ForegroundColor Yellow
-      #  $result.Updates.AcceptEula()
-    #}
+
+    if(-not $update.EulaAccepted){
+        Write-Host "Accepting EULA license for $update" -ForegroundColor Yellow
+        $update.AcceptEula()
+    }
 	
 	$downloads = New-Object -ComObject Microsoft.Update.UpdateColl
     $downloads.Add($update)|out-null
@@ -155,4 +154,5 @@ function get-reboot {
         elevate-privileges
     }
 }
-elevate-privileges
+banner
+#elevate-privileges
