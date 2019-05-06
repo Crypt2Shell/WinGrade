@@ -116,15 +116,19 @@ function install-update {
     $NumUp=0
     foreach ($update in $result.Updates){
         Write-Progress -Activity "Downloading Updates ..." -Status ($update.title) -PercentComplete ([int]($NumUp/$result.Updates.count*100)) -CurrentOperation "| [ $($NumUp)/$($result.Updates.count) ] | [ $([int]($NumUp/$result.Updates.count*100))% ] |"
-        $downloads.EulaAccepted
+        
+	$downloads.EulaAccepted
     	if(-not $downloads.EulaAccepted){
         	Write-Host "Accepting EULA for $downloads" -ForegroundColor Yellow
         	$downloads.AcceptEula()}
+	
 	$downloads = New-Object -ComObject Microsoft.Update.UpdateColl
         $downloads.Add($update)|out-null
         $downloader = $session.CreateUpdateDownLoader()
         $downloader.Updates = $downloads
         $downloader.Download() #| Foreach-Object {$_ -replace "2", "."} | Write-Host -ForegroundColor Green -NoNewline|Format-Wide
+	
+	$downloads.Clear()
 	
 	$NumUp++
     }
@@ -133,7 +137,7 @@ function install-update {
     foreach ($update in $result.Updates){ 
         Write-Progress -Activity "Installing Updates ..." -Status ($update.title) -PercentComplete([int]($NumUp/$result.Updates.count*100)) -CurrentOperation "| [ $($NumUp)/$($result.Updates.count) ] | [ $([int]($NumUp/$result.Updates.count*100))% ] |"
 	
-	    $installs = New-Object -ComObject Microsoft.Update.UpdateColl
+	$installs = New-Object -ComObject Microsoft.Update.UpdateColl
         if ($update.IsDownloaded){
             $installs.Add($update)|out-null
         }
@@ -141,6 +145,8 @@ function install-update {
         $installer.Updates = $installs
         $installresult = $installer.Install()
         $installresult #| Foreach-Object {$_ -replace "2", "."} | Write-Host -ForegroundColor Green -NoNewline|Format-Wide
+	
+	$installer.Clear()
 	
 	$NumUp++
     }
