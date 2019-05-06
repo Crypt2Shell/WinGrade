@@ -31,16 +31,16 @@ This Script is still in the early Alpha release!!! And has some bugs
 
 ## TODO
 
-[ ] Working on following Operating Systems:
-    [x] Windows 10
-    [ ] Windows 8.1
-    [ ] Windows 8
-    [x] Windows 7
+- [ ] Working on following Operating Systems:
+-   [x] Windows 10
+-   [ ] Windows 8.1
+-   [ ] Windows 8
+-   [x] Windows 7
     
-[ ] Network Scan und automate the Windows Update for all PC's in the same Network.
-    [ ] Find the IP-Adress, Broadcast & Netmask.
+- [ ] Network Scan und automate the Windows Update for all PC's in the same Network.
+-   [ ] Find the IP-Adress, Broadcast & Netmask.
     
-[x] Automate the full Windows Update Process.
-    [x] Download & Install Windows Updates.
-    [x] Accept EULA License.
-    [x] Show the current Update, Percentage done & all available Updates in the current session.
+- [x] Automate the full Windows Update Process.
+-   [x] Download & Install Windows Updates.
+-   [x] Accept EULA License.
+-   [x] Show the current Update, Percentage done & all available Updates in the current session.
