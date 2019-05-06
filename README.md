@@ -39,7 +39,7 @@ This Script is still in the early Alpha release!!! And has some bugs
     - [ ] Windows 8
     - [x] Windows 7
     
-- [ ] Network Scan und automate the Windows Update for all PC's in the same Network.
+- [ ] Network Scan und automate the Windows Update for all PC's in the same Network (with the -network argument).
     - [ ] Find the IP-Adress, Broadcast & Netmask.
     
 - [ ] Automate the full Windows Update Process.
