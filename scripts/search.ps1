@@ -91,11 +91,11 @@ function install-update {
     foreach ($update in $result.Updates){
         Write-Progress -Activity "Downloading Updates ..." -Status ($update.title) -PercentComplete ([int]($NumUp/$result.Updates.count*100)) -CurrentOperation "| [ $($NumUp)/$($result.Updates.count) ] | [ $([int]($NumUp/$result.Updates.count*100))% ] |"
         
-	$result.Updates.EulaAccepted
-    if(-not $result.Updates.EulaAccepted){
-        Write-Host "Accepting EULA for $results.Updates" -ForegroundColor Yellow
-        $result.Updates.AcceptEula()
-    }
+	#$result.Updates.EulaAccepted
+    #if(-not $result.Updates.EulaAccepted){
+     #   Write-Host "Accepting EULA for $results.Updates" -ForegroundColor Yellow
+      #  $result.Updates.AcceptEula()
+    #}
 	
 	$downloads = New-Object -ComObject Microsoft.Update.UpdateColl
     $downloads.Add($update)|out-null
