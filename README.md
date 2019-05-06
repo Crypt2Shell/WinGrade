@@ -42,7 +42,8 @@ This Script is still in the early Alpha release!!! And has some bugs
 - [ ] Network Scan und automate the Windows Update for all PC's in the same Network.
     - [ ] Find the IP-Adress, Broadcast & Netmask.
     
-- [x] Automate the full Windows Update Process.
+- [ ] Automate the full Windows Update Process.
     - [x] Download & Install Windows Updates.
     - [x] Accept EULA License.
     - [x] Show the current Update, Percentage done & all available Updates in the current session.
+    - [ ] Start after System Reboot (without User-Login).
