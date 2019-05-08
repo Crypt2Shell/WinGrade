@@ -42,6 +42,7 @@ This Script is still in the early Alpha release!!! And has some bugs
     - [ ] Windows Server 2012 
     - [ ] Windows Server 2012 R2 
     - [ ] Windows Server 2016
+    - [ ] Windows Server 2019
 
 - [ ] Network Scan und automate the Windows Update for all PC's in the same Network (with the -network arg).
     - [ ] Find the IP-Adress, Broadcast & Netmask.
