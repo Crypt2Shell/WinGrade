@@ -37,7 +37,11 @@ This Script is still in the early Alpha release!!! And has some bugs
     - [x] Windows 10
     - [ ] Windows 8.1
     - [ ] Windows 8
-    - [x] Windows 7
+    - [x] Windows 7 SP1
+    - [ ] Windows Server 2008 R2 SP1+ 
+    - [ ] Windows Server 2012 
+    - [ ] Windows Server 2012 R2 
+    - [ ] Windows Server 2016
 
 - [ ] Network Scan und automate the Windows Update for all PC's in the same Network (with the -network arg).
     - [ ] Find the IP-Adress, Broadcast & Netmask.
