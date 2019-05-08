@@ -47,3 +47,7 @@ This Script is still in the early Alpha release!!! And has some bugs
     - [x] Accept EULA License.
     - [x] Show the current Update, Percentage done & all available Updates in the current session.
     - [ ] Start after System Reboot (without User-Login).
+    
+- [ ] Support Windows Server platforms.
+    - [ ] Automatically detect a Windows Server.
+    - [ ] Going in "Server-Mode" and set reboot at 4:00 am.
