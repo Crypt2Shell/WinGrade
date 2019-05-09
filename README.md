@@ -44,7 +44,7 @@ This Script is still in the early Alpha release!!! And has some bugs
     - [ ] Windows Server 2016
     - [ ] Windows Server 2019
 
-- [ ] Network Scan und automate the Windows Update for all PC's in the same Network (with the -network arg).
+- [ ] Network Scan and automate the Windows Update for all PC's in the same Network (with the -network arg).
     - [ ] Find the IP-Adress, Broadcast & Netmask.
     
 - [ ] Automate the full Windows Update Process.
