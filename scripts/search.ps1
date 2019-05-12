@@ -99,7 +99,15 @@ function install-update {
     $downloads.Add($update)|out-null
     $downloader = $session.CreateUpdateDownLoader()
     $downloader.Updates = $downloads
-    $downloader.Download() #| Foreach-Object {$_ -replace "2", "."} | Write-Host -ForegroundColor Green -NoNewline|Format-Wide
+    $downloadresult = $downloader.Download()
+    $downloadresult |Out-Null
+    
+    if ($downloadresult.ResultCode -eq 2) {
+        Write-Host "." -ForegroundColor Green -NoNewline
+    }
+    else {
+        Write-Host "." -ForegroundColor Green -NoNewline
+    }
 	
 	$NumUp++
     }
@@ -118,7 +126,14 @@ function install-update {
         $installer = $session.CreateUpdateInstaller()
         $installer.Updates = $installs
         $installresult = $installer.Install()
-        $installresult #| Foreach-Object {$_ -replace "2", "."} | Write-Host -ForegroundColor Green -NoNewline|Format-Wide
+        $installresult |Out-Null
+
+        if ($installresult.ResultCode -eq 2) {
+            Write-Host "." -ForegroundColor Green -NoNewline
+        }
+        else {
+            Write-Host "." -ForegroundColor Green -NoNewline
+        }
 	
 	$NumUp++
     }
@@ -145,7 +160,7 @@ function get-reboot {
         Write-Host -ForegroundColor Cyan "`nRebooting..."
         bitsadmin /transfer WinGrade /download /priority normal https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/WinGrade.bat "$env:tmp\WinGrade.bat"
         schtasks /create /tn "WinGrade" /SC onstart /DELAY 0000:30 /RL highest /F /TR 'cmd.exe /c "%tmp%\WinGrade.bat"'
-	    Restart-Computer
+	    Restart-Computer -Force
     }
     else { 
         Write-Host -ForegroundColor Green "`nNo reboot required."
