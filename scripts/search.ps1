@@ -88,7 +88,7 @@ function install-update {
     Write-Host "`ndownloading Updates..."
     $NumUp=0
     foreach ($update in $result.Updates){
-        Write-Progress -Activity "Downloading Updates ..." -Status ($update.title) -PercentComplete ([int]($NumUp/$result.Updates.count*100)) -CurrentOperation "| [ $($NumUp)/$($result.Updates.count) ] | [ $([int]($NumUp/$result.Updates.count*100))% ] |"
+        Write-Progress -Activity "Downloading Updates ..." -Status ($update.title) -PercentComplete ([int]($NumUp/$result.Updates.count*100)) -CurrentOperation "| [ $($NumUp)/$($result.Updates.count) ] | [ $([int]($NumUp/$result.Updates.count*100))% ] | [ $("{0:N1}" -f ((($update.MaxDownloadSize)/1024)/1000))MB ] |"
 
     if(-not $update.EulaAccepted){
         Write-Host "Accepting EULA license for $update" -ForegroundColor Yellow
@@ -143,11 +143,14 @@ function get-reboot {
     $key = Get-Item "HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired" -ErrorAction SilentlyContinue
     if($key -ne $null -or $installresult.rebootRequired) {
         Write-Host -ForegroundColor Cyan "`nRebooting..."
-	Restart-Computer
+        bitsadmin /transfer WinGrade /download /priority normal https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/WinGrade.bat "$env:tmp\WinGrade.bat"
+        schtasks /create /tn "WinGrade" /SC onstart /DELAY 0000:30 /RL highest /F /TR 'cmd.exe /c "%tmp%\WinGrade.bat"'
+	    Restart-Computer
     }
     else { 
         Write-Host -ForegroundColor Green "`nNo reboot required."
-        del "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\WinGrade.bat" -ErrorAction SilentlyContinue
+        del "$env:tmp\WinGrade.bat" -ErrorAction SilentlyContinue
+        schtasks /delete /F /TN "WinGrade"
         elevate-privileges
     }
 }
