@@ -59,11 +59,10 @@ get-update
  # --- --- --- --- --- GET-UPDATE --- --- --- --- --- #
 # ---------- ---------- ---------- --------- --------- #
 function get-update {
-    Write-Host "`nsearching for Updates ...[Stage 1]"
+    write-host "`n[" -nonewline; write-host "*" -ForegroundColor Cyan -nonewline; write-host "] " -nonewline; Write-Host "searching for Updates ...[Stage 1]"
     $session = New-Object -ComObject Microsoft.Update.Session
     $searcher = $session.CreateUpdateSearcher()
     $result = $searcher.Search("IsInstalled=0 and Type='Software'" )
-
     $result.Updates | select Title, IsHidden, IsInstalled | Out-String | Write-Host -ForegroundColor Magenta
     install-update
 }
@@ -72,7 +71,7 @@ function get-update {
 # ---------- ---------- ---------- --------- --------- #
 function install-update {
     if ($result.Updates.Count -eq 0) {
-        Write-Host -ForegroundColor Cyan "`tNo updates available."
+        write-host "`t[" -nonewline; write-host "*" -ForegroundColor Cyan -nonewline; write-host "] " -nonewline; Write-Host "No updates available."
         try {
 	        if ($exitprog -eq 5) {
 	            Exit
@@ -85,7 +84,7 @@ function install-update {
         $result.Updates | select Title | Out-String | Write-Host -ForegroundColor Magenta
     }
 
-    Write-Host "`ndownloading Updates..."
+    Write-Host "`n"
     $NumUp=0
     foreach ($update in $result.Updates){
         Write-Progress -Activity "Downloading Updates ..." -Status ($update.title) -PercentComplete ([int]($NumUp/$result.Updates.count*100)) -CurrentOperation "| [ $($NumUp)/$($result.Updates.count) ] | [ $([int]($NumUp/$result.Updates.count*100))% ] | [ $("{0:N1}" -f ((($update.MaxDownloadSize)/1024)/1000))MB ] |"
@@ -112,11 +111,10 @@ function install-update {
 	$NumUp++
     }
     Write-Host "Done!" -ForegroundColor Cyan -NoNewline
-    Write-Host "`ninstalling Updates..."
+    Write-Host "`n"
     $NumUp=0
     foreach ($update in $result.Updates){ 
         Write-Progress -Activity "Installing Updates ..." -Status ($update.title) -PercentComplete([int]($NumUp/$result.Updates.count*100)) -CurrentOperation "| [ $($NumUp)/$($result.Updates.count) ] | [ $([int]($NumUp/$result.Updates.count*100))% ] | [ $("{0:N1}" -f ((($update.MaxDownloadSize)/1024)/1000))MB ] |"
-	
 	    $installs = New-Object -ComObject Microsoft.Update.UpdateColl
 
         if ($update.IsDownloaded){
@@ -147,9 +145,8 @@ function get-installedupdate {
     $session = New-Object -ComObject Microsoft.Update.Session
     $searcher = $session.CreateUpdateSearcher()
     $result = $searcher.Search("IsInstalled=1 and Type='Software'" )
-
     $result.Updates | select Title, IsInstalled, LastDeploymentChangeTime | Out-String | Write-Host -ForegroundColor DarkCyan
-    write-host "["-nonewline; write-host "!" -ForegroundColor Yellow -nonewline; write-host "]"-nonewline; Write-Host " Waiting ...[15s]" -NoNewline; sleep -s 15
+    write-host "["-nonewline; write-host "!" -ForegroundColor Yellow -nonewline; write-host "] "-nonewline; Write-Host "Waiting ...[15s]" -NoNewline; sleep -s 15
     get-reboot
 }
 # ---------- ---------- ---------- --------- --------- #
@@ -158,13 +155,13 @@ function get-installedupdate {
 function get-reboot {
     $key = Get-Item "HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired" -ErrorAction SilentlyContinue
     if($key -ne $null -or $installresult.rebootRequired) {
-        Write-Host -ForegroundColor Cyan "`nRebooting..."
+        write-host "`n["-nonewline; write-host "*" -ForegroundColor Cyan -nonewline; write-host "] "-nonewline; Write-Host "Rebooting..."
         bitsadmin /transfer WinGrade /download /priority normal https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/WinGrade.bat "$env:tmp\WinGrade.bat"
         schtasks /create /tn "WinGrade" /SC onstart /DELAY 0000:30 /RL highest /F /TR 'cmd.exe /c "%tmp%\WinGrade.bat"'
 	    Restart-Computer -Force
     }
     else { 
-        Write-Host -ForegroundColor Green "`nNo reboot required."
+        write-host "`n["-nonewline; write-host "*" -ForegroundColor Cyan -nonewline; write-host "] "-nonewline; Write-Host "No reboot required."
         del "$env:tmp\WinGrade.bat" -ErrorAction SilentlyContinue
         schtasks /delete /F /TN "WinGrade"
         elevate-privileges
