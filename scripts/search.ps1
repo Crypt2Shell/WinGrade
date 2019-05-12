@@ -143,9 +143,7 @@ function get-reboot {
     $key = Get-Item "HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired" -ErrorAction SilentlyContinue
     if($key -ne $null -or $installresult.rebootRequired) {
         Write-Host -ForegroundColor Cyan "`nRebooting..."
-        
 	Restart-Computer
-	#shutdown /r /t 0
     }
     else { 
         Write-Host -ForegroundColor Green "`nNo reboot required."
