@@ -106,16 +106,16 @@ function install-update {
         Write-Host "." -ForegroundColor Green -NoNewline
     }
     else {
-        Write-Host "." -ForegroundColor Green -NoNewline
+        Write-Host "." -ForegroundColor Red -NoNewline
     }
 	
 	$NumUp++
     }
-
+    Write-Host "Done!" -ForegroundColor Cyan -NoNewline
     Write-Host "`ninstalling Updates..."
     $NumUp=0
     foreach ($update in $result.Updates){ 
-        Write-Progress -Activity "Installing Updates ..." -Status ($update.title) -PercentComplete([int]($NumUp/$result.Updates.count*100)) -CurrentOperation "| [ $($NumUp)/$($result.Updates.count) ] | [ $([int]($NumUp/$result.Updates.count*100))% ] |"
+        Write-Progress -Activity "Installing Updates ..." -Status ($update.title) -PercentComplete([int]($NumUp/$result.Updates.count*100)) -CurrentOperation "| [ $($NumUp)/$($result.Updates.count) ] | [ $([int]($NumUp/$result.Updates.count*100))% ] | [ $("{0:N1}" -f ((($update.MaxDownloadSize)/1024)/1000))MB ] |"
 	
 	    $installs = New-Object -ComObject Microsoft.Update.UpdateColl
 
@@ -132,11 +132,12 @@ function install-update {
             Write-Host "." -ForegroundColor Green -NoNewline
         }
         else {
-            Write-Host "." -ForegroundColor Green -NoNewline
+            Write-Host "." -ForegroundColor Red -NoNewline
         }
 	
 	$NumUp++
     }
+    Write-Host "Done!" -ForegroundColor Cyan -NoNewline
     get-installedupdate
 }
 # ---------- ---------- ---------- --------- --------- #
