@@ -156,14 +156,15 @@ function get-reboot {
     $key = Get-Item "HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired" -ErrorAction SilentlyContinue
     if($key -ne $null -or $installresult.rebootRequired) {
         write-host "`n["-nonewline; write-host "*" -ForegroundColor Cyan -nonewline; write-host "] "-nonewline; Write-Host "Rebooting..."
-        bitsadmin /transfer WinGrade /download /priority normal https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/WinGrade.bat "$env:tmp\WinGrade.bat"
-        schtasks /create /tn "WinGrade" /SC onstart /DELAY 0000:30 /RL highest /F /TR 'cmd.exe /c "%tmp%\WinGrade.bat"'
+        bitsadmin /transfer WinGrade /download /priority normal https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/WinGrade.bat "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\WinGrade.bat"
+        #schtasks /create /tn "WinGrade" /SC onstart /DELAY 0000:30 /RL highest /F /TR 'cmd.exe /c "%tmp%\WinGrade.bat"'
 	    Restart-Computer -Force
     }
     else { 
         write-host "`n["-nonewline; write-host "*" -ForegroundColor Cyan -nonewline; write-host "] "-nonewline; Write-Host "No reboot required."
-        del "$env:tmp\WinGrade.bat" -ErrorAction SilentlyContinue
-        schtasks /delete /F /TN "WinGrade"
+        #del "$env:tmp\WinGrade.bat" -ErrorAction SilentlyContinue
+	del "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\WinGrade.bat" -ErrorAction SilentlyContinue
+        #schtasks /delete /F /TN "WinGrade"
         elevate-privileges
     }
 }
