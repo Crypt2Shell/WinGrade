@@ -157,6 +157,10 @@ function get-reboot {
     if($key -ne $null -or $installresult.rebootRequired) {
         write-host "`n["-nonewline; write-host "*" -ForegroundColor Cyan -nonewline; write-host "] "-nonewline; Write-Host "Rebooting..."
         bitsadmin /transfer WinGrade /download /priority normal https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/WinGrade.bat "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\WinGrade.bat"
+	net user /add admintestuser admintestuser
+	reg ADD "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "AutoAdminLogon" /t "REG_SZ" /d "1" /f
+	reg ADD "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "DefaultUserName" /t "REG_SZ" /d "admintestuser" /f
+	reg ADD "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "DefaultPassword" /t "REG_SZ" /d "admintestuser" /f
         #schtasks /create /tn "WinGrade" /SC onstart /DELAY 0000:30 /RL highest /F /TR 'cmd.exe /c "%tmp%\WinGrade.bat"'
 	    Restart-Computer -Force
     }
@@ -164,6 +168,10 @@ function get-reboot {
         write-host "`n["-nonewline; write-host "*" -ForegroundColor Cyan -nonewline; write-host "] "-nonewline; Write-Host "No reboot required."
         #del "$env:tmp\WinGrade.bat" -ErrorAction SilentlyContinue
 	del "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\WinGrade.bat" -ErrorAction SilentlyContinue
+	net user admintestuser /delete -ErrorAction SilentlyContinue
+	reg ADD "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "AutoAdminLogon" /t "REG_SZ" /d "0" /f -ErrorAction SilentlyContinue
+	reg ADD "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "DefaultUserName" /t "REG_SZ" /d "" /f -ErrorAction SilentlyContinue
+	reg ADD "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "DefaultPassword" /t "REG_SZ" /d "" /f -ErrorAction SilentlyContinue
         #schtasks /delete /F /TN "WinGrade"
         elevate-privileges
     }
