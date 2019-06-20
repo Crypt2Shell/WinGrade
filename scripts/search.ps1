@@ -157,7 +157,7 @@ function get-reboot {
     if($key -ne $null -or $installresult.rebootRequired) {
         write-host "`n["-nonewline; write-host "*" -ForegroundColor Cyan -nonewline; write-host "] "-nonewline; Write-Host "Rebooting..."
         bitsadmin /transfer WinGrade /download /priority normal https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/WinGrade.bat "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\WinGrade.bat"
-	net user Administrator admin /active:yes
+	net user Administrator /active:yes
 	reg ADD "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "AutoAdminLogon" /t "REG_SZ" /d "1" /f
 	reg ADD "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "DefaultDomainName" /t "REG_SZ" /d "" /f
 	reg ADD "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "DefaultUserName" /t "REG_SZ" /d "Administrator" /f
