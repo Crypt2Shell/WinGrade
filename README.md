@@ -56,6 +56,7 @@ This Script is still in the early Alpha release!!! And has some bugs
     - [x] Download & Install Windows Updates.
     - [x] Accept EULA License.
     - [x] Show the current Update, Percentage done & all available Updates in the current session.
+    - [x] Start after System Reboot (automate User-Login).
     - [ ] Start after System Reboot (without User-Login).
     
 - [ ] Support Windows Server platforms.
