@@ -52,7 +52,7 @@ This Script is still in the early Alpha release!!! And has some bugs
     - [x] Accept EULA License.
     - [x] Show the current Update, Percentage done & all available Updates in the current session.
     - [x] Start after System Reboot (automate User-Login).
-    - [x] Start after System Reboot (without User-Login). (WinUp-autostartup.ps1)
+    - [x] Start after System Reboot (without User-Login). (WinUp-hiddenautostartup.ps1)
     
 - [ ] Support Windows Server platforms.
     - [ ] Automatically detect a Windows Server.
