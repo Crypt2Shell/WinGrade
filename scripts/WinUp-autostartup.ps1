@@ -162,7 +162,7 @@ function get-reboot {
 	reg ADD "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "DefaultDomainName"/t "REG_SZ" /f
 	reg ADD "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "DefaultUserName" /t "REG_SZ" /d "Administrator" /f
 	reg ADD "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "DefaultPassword" /t "REG_SZ" /d "paedmllinux" /f
-        schtasks /create /tn "WinGrade" /SC onlogon /DELAY 0000:30 /RL highest /RU "Administrator" /RP "paedmllinux" /F /TR 'cmd.exe /c "%windir%\WinGrade.bat"'
+        schtasks /create /tn "WinGrade" /SC onstart /DELAY 0000:30 /RL highest /RU "Administrator" /RP "paedmllinux" /F /TR 'cmd.exe /c "%windir%\WinGrade.bat"'
 	    Restart-Computer -Force
     }
     else { 
