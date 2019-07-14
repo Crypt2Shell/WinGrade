@@ -60,6 +60,7 @@ get-update
 # ---------- ---------- ---------- --------- --------- #
 function get-update {
     write-host "`n[" -nonewline; write-host "*" -ForegroundColor Cyan -nonewline; write-host "] " -nonewline; Write-Host "searching for Updates ...[Stage 1]"
+    Start-Process 'cmd' -Verb RunAs -ArgumentList '/c usoclient StartScan' -ErrorAction SilentlyContinue
     $session = New-Object -ComObject Microsoft.Update.Session
     $searcher = $session.CreateUpdateSearcher()
     $result = $searcher.Search("IsInstalled=0 and Type='Software'" )
@@ -159,7 +160,8 @@ function get-reboot {
         bitsadmin /transfer WinGrade /download /priority normal https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/WinGrade.bat "$env:windir\WinGrade.bat"
 	net user Administrator paedmllinux /active:yes
         schtasks /create /tn "WinGrade" /SC onstart /DELAY 0000:30 /RL highest /RU "Administrator" /RP "paedmllinux" /F /TR 'cmd.exe /c "%windir%\WinGrade.bat"'
-	    Restart-Computer -Force
+	explorer ms-settings:windowsupdate-action
+	Restart-Computer -Force
     }
     else { 
         write-host "`n["-nonewline; write-host "*" -ForegroundColor Cyan -nonewline; write-host "] "-nonewline; Write-Host "No reboot required."
