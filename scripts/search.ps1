@@ -60,6 +60,7 @@ get-update
 # ---------- ---------- ---------- --------- --------- #
 function get-update {
     write-host "`n[" -nonewline; write-host "*" -ForegroundColor Cyan -nonewline; write-host "] " -nonewline; Write-Host "searching for Updates ...[Stage 1]"
+    explorer ms-settings:windowsupdate
     explorer ms-settings:windowsupdate-action
     $session = New-Object -ComObject Microsoft.Update.Session
     $searcher = $session.CreateUpdateSearcher()
