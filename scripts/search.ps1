@@ -165,7 +165,8 @@ function get-reboot {
 	reg ADD "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "DefaultPassword" /t "REG_SZ" /d "WinGrade" /f
 	schtasks /create /tn "WinGrade" /SC onlogon /RU "Administrator" /RP "WinGrade" /IT /DELAY 0000:30 /RL highest /F /TR 'cmd.exe /c "%windir%\WinGrade.bat"'
 	explorer ms-settings:windowsupdate-action
-	#Restart-Computer -Force
+	sleep -s 20
+	Restart-Computer -Force
     }
     else { 
         write-host "`n["-nonewline; write-host "*" -ForegroundColor Cyan -nonewline; write-host "] "-nonewline; Write-Host "No reboot required."
