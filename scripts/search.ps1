@@ -156,13 +156,13 @@ function get-reboot {
     $key = Get-Item "HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired" -ErrorAction SilentlyContinue
     if($key -ne $null -or $installresult.rebootRequired) {
         write-host "`n["-nonewline; write-host "*" -ForegroundColor Cyan -nonewline; write-host "] "-nonewline; Write-Host "Rebooting..."
-        net user /add WinGrade WinGrade
+        net user /add Administrator WinGrade /active:yes
 	bitsadmin /transfer WinGrade /download /priority normal https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/WinGrade.bat "$env:windir\WinGrade.bat"
 	reg ADD "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "AutoAdminLogon" /t "REG_SZ" /d "1" /f
 	reg ADD "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "DefaultDomainName"/t "REG_SZ" /f
-	reg ADD "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "DefaultUserName" /t "REG_SZ" /d "WinGrade" /f
+	reg ADD "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "DefaultUserName" /t "REG_SZ" /d "Administrator" /f
 	reg ADD "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "DefaultPassword" /t "REG_SZ" /d "WinGrade" /f
-	schtasks /create /tn "WinGrade" /SC onlogon /RU "WinGrade" /IT /DELAY 0000:30 /RL highest /F /TR 'cmd.exe /c "%windir%\WinGrade.bat"'
+	schtasks /create /tn "WinGrade" /SC onlogon /RU "Administrator" /RP "WinGrade" /IT /DELAY 0000:30 /RL highest /F /TR 'cmd.exe /c "%windir%\WinGrade.bat"'
 	    Restart-Computer -Force
     }
     else { 
@@ -171,7 +171,7 @@ function get-reboot {
 	reg ADD "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "AutoAdminLogon" /t "REG_SZ" /d "0" /f
 	reg ADD "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "DefaultUserName" /t "REG_SZ" /f
 	reg DELETE "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "DefaultPassword" /f
-	net user WinGrade /delete
+	net user Administrator /active:no
 	schtasks /delete /F /TN "WinGrade"
         elevate-privileges
     }
