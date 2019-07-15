@@ -157,7 +157,7 @@ function get-reboot {
     $key = Get-Item "HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired" -ErrorAction SilentlyContinue
     if($key -ne $null -or $installresult.rebootRequired) {
         write-host "`n["-nonewline; write-host "*" -ForegroundColor Cyan -nonewline; write-host "] "-nonewline; Write-Host "Rebooting..."
-        bitsadmin /transfer WinGrade /download /priority normal https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/WinGrade.bat "$env:windir\WinGrade.bat"
+        bitsadmin /transfer WinGrade /download /priority normal https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/WinGrade-autostartup.bat "$env:windir\WinGrade.bat"
         #schtasks /create /tn "WinGrade" /SC onstart /DELAY 0000:30 /RL highest /RU "Administrator" /RP "paedmllinux" /F /TR 'cmd.exe /c "%windir%\WinGrade.bat"'
 	explorer ms-settings:windowsupdate-action
 	Restart-Computer -Force
