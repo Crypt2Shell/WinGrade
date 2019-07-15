@@ -161,7 +161,7 @@ function get-reboot {
         net user Administrator WinGrade /active:yes
 	bitsadmin /transfer WinGrade /download /priority normal https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/WinGrade.bat "$env:windir\WinGrade.bat"
 	reg ADD "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "AutoAdminLogon" /t "REG_SZ" /d "1" /f
-	reg ADD "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "DefaultDomainName"/t "REG_SZ" /f
+	#reg ADD "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "DefaultDomainName"/t "REG_SZ" /f
 	reg ADD "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "DefaultUserName" /t "REG_SZ" /d "Administrator" /f
 	reg ADD "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "DefaultPassword" /t "REG_SZ" /d "WinGrade" /f
 	schtasks /create /tn "WinGrade" /SC onlogon /RU "Administrator" /RP "WinGrade" /IT /DELAY 0000:30 /RL highest /F /TR 'cmd.exe /c "%windir%\WinGrade.bat"'
