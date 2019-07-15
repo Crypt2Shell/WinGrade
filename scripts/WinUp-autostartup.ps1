@@ -60,7 +60,7 @@ get-update
 # ---------- ---------- ---------- --------- --------- #
 function get-update {
     write-host "`n[" -nonewline; write-host "*" -ForegroundColor Cyan -nonewline; write-host "] " -nonewline; Write-Host "searching for Updates ...[Stage 1]"
-    explorer ms-settings:windowsupdate-action|out-null
+    start ms-settings:windowsupdate-action|out-null
     $session = New-Object -ComObject Microsoft.Update.Session
     $searcher = $session.CreateUpdateSearcher()
     $result = $searcher.Search("IsInstalled=0 and Type='Software'" )
@@ -158,7 +158,7 @@ function get-reboot {
     if($key -ne $null -or $installresult.rebootRequired) {
         write-host "`n["-nonewline; write-host "*" -ForegroundColor Cyan -nonewline; write-host "] "-nonewline; Write-Host "Rebooting..."
         #schtasks /create /tn "WinGrade" /SC onstart /DELAY 0000:30 /RL highest /RU "Administrator" /RP "paedmllinux" /F /TR 'cmd.exe /c "%windir%\WinGrade.bat"'
-	explorer ms-settings:windowsupdate-action|out-null
+	start ms-settings:windowsupdate-action|out-null
 	Restart-Computer -Force
     }
     else { 
