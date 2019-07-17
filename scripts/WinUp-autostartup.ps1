@@ -44,7 +44,6 @@ $hMenu = [Win32.NativeMethods]::GetSystemMenu($hwnd, 0)
 # Disable Window itself
 #[Win32.NativeMethods]::EnableWindow($hwnd, 0) | Out-Null
 }catch{}
-powershell -nologo
 banner
 }
 # ---------- ---------- ---------- --------- --------- #
