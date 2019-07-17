@@ -1,8 +1,8 @@
 # ---------- ---------- ---------- --------- --------- #
  # -- --- --- --- DISABLE-WINDOW --- --- --- --- --- #
 # ---------- ---------- ---------- --------- --------- #
-function disable-Window {
-	#Calling user32.dll methods for Windows and Menus
+try {
+#Calling user32.dll methods for Windows and Menus
 $MethodsCall = '
 [DllImport("user32.dll")] public static extern long GetSystemMenu(IntPtr hWnd, bool bRevert);
 [DllImport("user32.dll")] public static extern bool EnableMenuItem(long hMenuItem, long wIDEnableItem, long wEnable);
@@ -51,7 +51,7 @@ $WS_EX_TOPMOST = 0x00000008L
 #... http://msdn.microsoft.com/en-us/library/windows/desktop/ff700543(v=vs.85).aspx
  
 #Get window handle of Powershell process (Ensure there is only one Powershell window opened)
-$PSWindow = (Get-Process -Id $PID) | where {$_.MainWindowTitle -like "*PowerShell*"}
+$PSWindow = (Get-Process -Id powerhsell) | where {$_.MainWindowTitle -like "*Powershell*"}
 $hwnd = $PSWindow.MainWindowHandle
  
 #Get System menu of windows handled
@@ -63,9 +63,18 @@ $hMenu = [Win32.NativeMethods]::GetSystemMenu($hwnd, 0)
 #Disable X Button and window itself
 [Win32.NativeMethods]::EnableMenuItem($hMenu, $SC_CLOSE, $MF_DISABLED) | Out-Null
 [Win32.NativeMethods]::EnableWindow($hwnd, 0) | Out-Null
-
+ 
+Write-Host "Disabled!" -ForegroundColor Red 
+sleep 5
+ 
+#Enable X Button
+[Win32.NativeMethods]::EnableMenuItem($hMenu, $SC_CLOSE, $MF_ENABLED) | Out-Null
+[Win32.NativeMethods]::EnableWindow($hwnd, 1) | Out-Null
+ 
+Write-Host "Enabled!" -ForegroundColor Green
+sleep 2
+}catch{}
 banner
-}
 # ---------- ---------- ---------- --------- --------- #
  # --- --- --- --- --- Banner --- --- --- --- --- --- #
 # ---------- ---------- ---------- --------- --------- #
