@@ -183,6 +183,9 @@ function get-reboot {
     if($key -ne $null -or $installresult.rebootRequired) {
         write-host "`n["-nonewline; write-host "*" -ForegroundColor Cyan -nonewline; write-host "] "-nonewline; Write-Host "Rebooting..."
 	    Restart-Computer -Force
+	    # Load MessageBox
+	    [System.Reflection.Assembly]::LoadWithPartialName("System.Windows.Forms")
+	    [System.Windows.Forms.MessageBox]::Show("Reboot","Reboot",0)
     }
     else { 
         write-host "`n["-nonewline; write-host "*" -ForegroundColor Cyan -nonewline; write-host "] "-nonewline; Write-Host "No reboot required."
