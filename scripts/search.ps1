@@ -47,10 +47,6 @@ $SC_MOUSEMENU = 0xF090
 $SC_KEYMENU = 0xF100
 #... http://msdn.microsoft.com/en-us/library/windows/desktop/ms646360(v=vs.85).aspx
  
-#$GWL_EXSTYLE = -20
-#$GWL_STYLE = -16
-#... http://msdn.microsoft.com/en-us/library/windows/desktop/ms644898(v=vs.85).aspx
- 
 #WM_SETICON Message  -  http://msdn.microsoft.com/en-us/library/ms632643%28VS.85%29.aspx
 $WM_SETICON = 0x0080;
 $ICON_SMALL = 0;
@@ -76,7 +72,7 @@ $hwnd = $PSWindow.MainWindowHandle
 $hMenu = [Win32.NativeMethods]::GetSystemMenu($hwnd, 0)
  
 #Window Style : TOOLWINDOW
-[Win32.NativeMethods]::SetWindowLongPtr($hwnd, $WS_EX_TOOLWINDOW) | Out-Null
+[Win32.NativeMethods]::SetWindowLongPtr($hwnd, $GWL_EXSTYLE, $WS_EX_TOOLWINDOW) | Out-Null
  
 #Disable X Button and window itself
 [Win32.NativeMethods]::EnableMenuItem($hMenu, $SC_CLOSE, $MF_DISABLED) | Out-Null
