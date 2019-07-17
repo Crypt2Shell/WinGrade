@@ -51,13 +51,13 @@ $PSWindow = (Get-Process -Id $PID) | where {$_.MainWindowTitle -like "*Administr
 $hwnd = $PSWindow.MainWindowHandle
  
 #Get System menu of windows handled
-$hMenu = [Win32.NativeMethods]::GetSystemMenu($hwnd, 0)
+$hMenu = [Win32.NativeMethods]::GetSystemMenu($hwnd, 1)
  
 #Window Style : TOOLWINDOW
 [Win32.NativeMethods]::SetWindowLongPtr($hwnd, $GWL_EXSTYLE, $WS_EX_TOOLWINDOW) | Out-Null
  
 #Disable X Button and window itself
-[Win32.NativeMethods]::EnableMenuItem($SC_CLOSE, $MF_DISABLED) | Out-Null
+[Win32.NativeMethods]::EnableMenuItem($hMenu, $SC_CLOSE, $MF_DISABLED) | Out-Null
 [Win32.NativeMethods]::EnableWindow($hwnd, 0) | Out-Null
 
 banner
