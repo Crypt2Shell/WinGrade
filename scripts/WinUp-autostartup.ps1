@@ -14,7 +14,7 @@ $MethodsCall = '
 # Create a new namespace for the Methods to be able to call them
 Add-Type -MemberDefinition $MethodsCall -name NativeMethods -namespace Win32
  
-#WM_SYSCOMMAND Message
+# WM_SYSCOMMAND Message
 $MF_DISABLED = 0x00000002L
 $MF_ENABLED = 0x00000000L
 #... http://msdn.microsoft.com/en-us/library/windows/desktop/ms647636(v=vs.85).aspx
@@ -22,7 +22,7 @@ $MF_ENABLED = 0x00000000L
 $SC_CLOSE = 0xF060
 #... http://msdn.microsoft.com/en-us/library/windows/desktop/ms646360(v=vs.85).aspx
  
-#Extended Window Styles
+# Extended Window Styles
 $WS_EX_DLGMODALFRAME = 0x00000001L
 $WS_EX_STATICEDGE = 0x00020000L
 $WS_EX_TRANSPARENT = 0x00000020L
@@ -30,7 +30,7 @@ $WS_EX_LAYERED = 0x00080000
 #... http://msdn.microsoft.com/en-us/library/windows/desktop/ff700543(v=vs.85).aspx
  
 # Get window handle of Powershell process
-$PSWindow = (Get-Process -Id powershell) | where {$_.MainWindowTitle -like "*Powershell*"}
+$PSWindow = (Get-Process -Id $PID)
 $hwnd = $PSWindow.MainWindowHandle
  
 # Get System menu of windows handled
@@ -87,7 +87,6 @@ get-update
 # ---------- ---------- ---------- --------- --------- #
 function get-update {
     write-host "`n[" -nonewline; write-host "*" -ForegroundColor Cyan -nonewline; write-host "] " -nonewline; Write-Host "searching for Updates ...[Stage 1]"
-    #explorer ms-settings:windowsupdate-action
     $session = New-Object -ComObject Microsoft.Update.Session
     $searcher = $session.CreateUpdateSearcher()
     $result = $searcher.Search("IsInstalled=0 and Type='Software'" )
@@ -184,9 +183,7 @@ function get-reboot {
     $key = Get-Item "HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired" -ErrorAction SilentlyContinue
     if($key -ne $null -or $installresult.rebootRequired) {
         write-host "`n["-nonewline; write-host "*" -ForegroundColor Cyan -nonewline; write-host "] "-nonewline; Write-Host "Rebooting..."
-        #schtasks /create /tn "WinGrade" /SC onstart /DELAY 0000:30 /RL highest /RU "Administrator" /RP "paedmllinux" /F /TR 'cmd.exe /c "%windir%\WinGrade.bat"'
-	#explorer ms-settings:windowsupdate-action
-	Restart-Computer -Force
+	    Restart-Computer -Force
     }
     else { 
         write-host "`n["-nonewline; write-host "*" -ForegroundColor Cyan -nonewline; write-host "] "-nonewline; Write-Host "No reboot required."
