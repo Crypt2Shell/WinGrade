@@ -10,7 +10,6 @@ $MethodsCall = '
 [DllImport("user32.dll")] public static extern long SetWindowLongPtr(long hWnd, long nIndex, long dwNewLong);
 [DllImport("user32.dll")] public static extern bool EnableWindow(long hWnd, int bEnable);
 '
- 
 # Create a new namespace for the Methods to be able to call them
 Add-Type -MemberDefinition $MethodsCall -name NativeMethods -namespace Win32
  
