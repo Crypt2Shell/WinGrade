@@ -51,7 +51,7 @@ $WS_EX_TOPMOST = 0x00000008L
 #... http://msdn.microsoft.com/en-us/library/windows/desktop/ff700543(v=vs.85).aspx
  
 #Get window handle of Powershell process (Ensure there is only one Powershell window opened)
-$PSWindow = (Get-Process -Id $PID) | where {$_.MainWindowTitle -like "*Administrator*"}
+$PSWindow = (Get-Process -Id $PID) | where {$_.MainWindowTitle -like "*PowerShell*"}
 $hwnd = $PSWindow.MainWindowHandle
  
 #Get System menu of windows handled
