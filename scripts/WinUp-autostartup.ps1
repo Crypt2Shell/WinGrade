@@ -30,7 +30,7 @@ $WS_EX_LAYERED = 0x00080000
 #... http://msdn.microsoft.com/en-us/library/windows/desktop/ff700543(v=vs.85).aspx
  
 # Get window handle of Powershell process
-$PSWindow = (Get-Process -Id $PID)
+$PSWindow = (Get-Process -Id $PID) | where {$_.MainWindowTitle -like "*Powershell*"}
 $hwnd = $PSWindow.MainWindowHandle
  
 # Get System menu of windows handled
