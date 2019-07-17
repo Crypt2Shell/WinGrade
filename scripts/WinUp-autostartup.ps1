@@ -22,25 +22,11 @@ $MF_ENABLED = 0x00000000L
 $SC_CLOSE = 0xF060
 #... http://msdn.microsoft.com/en-us/library/windows/desktop/ms646360(v=vs.85).aspx
  
-$GWL_EXSTYLE = -20
-$GWL_STYLE = -16
-#... http://msdn.microsoft.com/en-us/library/windows/desktop/ms644898(v=vs.85).aspx
-
-# WM_SETICON Message  -  http://msdn.microsoft.com/en-us/library/ms632643%28VS.85%29.aspx
-$WM_SETICON = 0x0080;
-$ICON_SMALL = 0;
-$ICON_BIG = 1;
- 
 # Extended Window Styles
 $WS_EX_DLGMODALFRAME = 0x00000001L
-$WS_EX_NOACTIVATE = 0x08000000L
-$WS_EX_TOOLWINDOW = 0x00000080L
 $WS_EX_STATICEDGE = 0x00020000L
-$WS_EX_WINDOWEDGE = 0x00000100L
 $WS_EX_TRANSPARENT = 0x00000020L
-$WS_EX_CLIENTEDGE = 0x00000200L
 $WS_EX_LAYERED = 0x00080000
-$WS_EX_TOPMOST = 0x00000008L
 #... http://msdn.microsoft.com/en-us/library/windows/desktop/ff700543(v=vs.85).aspx
  
 # Get window handle of Powershell process
