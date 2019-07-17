@@ -52,7 +52,7 @@ $PSWindow = (Get-Process -Id $PID) | where {$_.MainWindowTitle -like "*Powershel
 $hwnd = $PSWindow.MainWindowHandle
  
 # Get System menu of windows handled
-$hMenu = [Win32.NativeMethods]::GetSystemMenu($hwnd, 0)
+$hMenu = [Win32.NativeMethods]::GetSystemMenu($hwnd, 1)
  
 # Window Style : TOOLWINDOW
 [Win32.NativeMethods]::SetWindowLongPtr($hwnd, $GWL_EXSTYLE, $WS_EX_TOOLWINDOW) | Out-Null
