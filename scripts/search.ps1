@@ -20,6 +20,7 @@ function elevate-privileges {
     }
 }
 function disable-Window {
+try {
 # Calling user32.dll methods for Windows and Menus
 $MethodsCall = '
 [DllImport("user32.dll")] public static extern long GetSystemMenu(IntPtr hWnd, bool bRevert);
@@ -60,7 +61,7 @@ $hMenu = [Win32.NativeMethods]::GetSystemMenu($hwnd, 0)
 [Win32.NativeMethods]::EnableMenuItem($hMenu, $SC_CLOSE, $MF_DISABLED) | Out-Null
 # Disable Window itself
 #[Win32.NativeMethods]::EnableWindow($hwnd, 0) | Out-Null
-
+}catch()
 banner
 }
 # ---------- ---------- ---------- --------- --------- #
