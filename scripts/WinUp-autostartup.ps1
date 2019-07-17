@@ -22,14 +22,14 @@ $MF_ENABLED = 0x00000000L
 $SC_CLOSE = 0xF060
 #... http://msdn.microsoft.com/en-us/library/windows/desktop/ms646360(v=vs.85).aspx
  
-#$GWL_EXSTYLE = -20
-#$GWL_STYLE = -16
+$GWL_EXSTYLE = -20
+$GWL_STYLE = -16
 #... http://msdn.microsoft.com/en-us/library/windows/desktop/ms644898(v=vs.85).aspx
 
 # WM_SETICON Message  -  http://msdn.microsoft.com/en-us/library/ms632643%28VS.85%29.aspx
-#$WM_SETICON = 0x0080;
-#$ICON_SMALL = 0;
-#$ICON_BIG = 1;
+$WM_SETICON = 0x0080;
+$ICON_SMALL = 0;
+$ICON_BIG = 1;
  
 # Extended Window Styles
 $WS_EX_DLGMODALFRAME = 0x00000001L
