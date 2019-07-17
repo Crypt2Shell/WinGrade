@@ -74,7 +74,7 @@ sleep 5
 Write-Host "Enabled!" -ForegroundColor Green
 sleep 2
 }catch{}
-banner
+
 # ---------- ---------- ---------- --------- --------- #
  # --- --- --- --- --- Banner --- --- --- --- --- --- #
 # ---------- ---------- ---------- --------- --------- #
@@ -221,7 +221,7 @@ function get-reboot {
         write-host "`n["-nonewline; write-host "*" -ForegroundColor Cyan -nonewline; write-host "] "-nonewline; Write-Host "No reboot required."
 	del "$env:windir\WinGrade.bat" -ErrorAction SilentlyContinue
         schtasks /delete /F /TN "WinGrade"
-        disable-Window
+        banner
     }
 }
-disable-Window
+banner
