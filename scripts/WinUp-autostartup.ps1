@@ -2,7 +2,8 @@
  # -- --- --- --- DISABLE-WINDOW --- --- --- --- --- #
 # ---------- ---------- ---------- --------- --------- #
 function disable-Window {
-	#Calling user32.dll methods for Windows and Menus
+try {
+# Calling user32.dll methods for Windows and Menus
 $MethodsCall = '
 [DllImport("user32.dll")] public static extern long GetSystemMenu(IntPtr hWnd, bool bRevert);
 [DllImport("user32.dll")] public static extern bool EnableMenuItem(long hMenuItem, long wIDEnableItem, long wEnable);
@@ -10,7 +11,7 @@ $MethodsCall = '
 [DllImport("user32.dll")] public static extern bool EnableWindow(long hWnd, int bEnable);
 '
  
-#Create a new namespace for the Methods to be able to call them
+# Create a new namespace for the Methods to be able to call them
 Add-Type -MemberDefinition $MethodsCall -name NativeMethods -namespace Win32
  
 #WM_SYSCOMMAND Message
@@ -28,20 +29,21 @@ $WS_EX_TRANSPARENT = 0x00000020L
 $WS_EX_LAYERED = 0x00080000
 #... http://msdn.microsoft.com/en-us/library/windows/desktop/ff700543(v=vs.85).aspx
  
-#Get window handle of Powershell process (Ensure there is only one Powershell window opened)
+# Get window handle of Powershell process
 $PSWindow = (Get-Process -Id $PID)
 $hwnd = $PSWindow.MainWindowHandle
  
-#Get System menu of windows handled
+# Get System menu of windows handled
 $hMenu = [Win32.NativeMethods]::GetSystemMenu($hwnd, 0)
  
-#Window Style : TOOLWINDOW
+# Window Style : TOOLWINDOW
 [Win32.NativeMethods]::SetWindowLongPtr($hwnd, $GWL_EXSTYLE, $WS_EX_TOOLWINDOW) | Out-Null
  
-#Disable X Button and window itself
+# Disable X Button Window itself
 [Win32.NativeMethods]::EnableMenuItem($hMenu, $SC_CLOSE, $MF_DISABLED) | Out-Null
+# Disable Window itself
 #[Win32.NativeMethods]::EnableWindow($hwnd, 0) | Out-Null
-
+}catch{}
 banner
 }
 # ---------- ---------- ---------- --------- --------- #
