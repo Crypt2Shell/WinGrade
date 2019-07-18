@@ -17,6 +17,7 @@ $type = Add-Type -MemberDefinition $signature -Name SetWindowPosition -Namespace
 $handle = (Get-Process -id $Global:PID).MainWindowHandle 
 $alwaysOnTop = New-Object -TypeName System.IntPtr -ArgumentList (-1) 
 $type::SetWindowPos($handle, $alwaysOnTop, 0, 0, 0, 0, 0x0003)
+exit 1
 disable-window
 }
 # ---------- ---------- ---------- --------- --------- #
