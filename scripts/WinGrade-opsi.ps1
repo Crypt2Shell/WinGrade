@@ -1,4 +1,21 @@
 # ---------- ---------- ---------- --------- --------- #
+ # -- --- --- --- SET-FOREGROUNDWINDOW --- --- --- -- #
+# ---------- ---------- ---------- --------- --------- #
+function set-ForegroundWindow {
+Add-Type @"
+  using System;
+  using System.Runtime.InteropServices;
+  public class SFW {
+     [DllImport("user32.dll")]
+     [return: MarshalAs(UnmanagedType.Bool)]
+     public static extern bool SetForegroundWindow(IntPtr hWnd);
+  }
+"@
+$window =  (get-process -Id $PID).MainWindowHandle # Get window handle of Powershell process
+[SFW]::SetForegroundWindow($window)
+disable-Window
+}
+# ---------- ---------- ---------- --------- --------- #
  # -- --- --- --- DISABLE-WINDOW --- --- --- --- --- #
 # ---------- ---------- ---------- --------- --------- #
 function disable-Window {
@@ -190,7 +207,7 @@ function get-reboot {
 	del "$env:windir\WinGrade.bat" -ErrorAction SilentlyContinue
 	del "$env:windir\WinGrade.ps1" -ErrorAction SilentlyContinue
         schtasks /delete /F /TN "WinGrade"
-        disable-Window
+        set-ForegroundWindow
     }
 }
-disable-Window
+set-ForegroundWindow
