@@ -2,18 +2,23 @@
  # -- --- --- --- SET-FOREGROUNDWINDOW --- --- --- -- #
 # ---------- ---------- ---------- --------- --------- #
 function set-ForegroundWindow {
-Add-Type @"
-  using System;
-  using System.Runtime.InteropServices;
-  public class SFW {
-     [DllImport("user32.dll")]
-     [return: MarshalAs(UnmanagedType.Bool)]
-     public static extern bool SetForegroundWindow(IntPtr hWnd);
-  }
-"@
-$window =  (get-process -Id $PID).MainWindowHandle # Get window handle of Powershell process
-[SFW]::SetForegroundWindow($window)
-banner
+$signature = @’ 
+[DllImport("user32.dll")] 
+public static extern bool SetWindowPos( 
+    IntPtr hWnd, 
+    IntPtr hWndInsertAfter, 
+    int X, 
+    int Y, 
+    int cx, 
+    int cy, 
+    uint uFlags); 
+‘@ 
+$type = Add-Type -MemberDefinition $signature -Name SetWindowPosition -Namespace SetWindowPos -Using System.Text -PassThru
+$handle = (Get-Process -id $Global:PID).MainWindowHandle 
+$alwaysOnTop = New-Object -TypeName System.IntPtr -ArgumentList (-1) 
+$type::SetWindowPos($handle, $alwaysOnTop, 0, 0, 0, 0, 0x0003)
+
+disable-Window
 }
 # ---------- ---------- ---------- --------- --------- #
  # -- --- --- --- DISABLE-WINDOW --- --- --- --- --- #
