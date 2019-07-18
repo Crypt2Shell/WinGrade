@@ -1,7 +1,7 @@
 # ---------- ---------- ---------- --------- --------- #
  # -- --- --- --- SET-FOREGROUNDWINDOW --- --- --- -- #
 # ---------- ---------- ---------- --------- --------- #
-function set-ForegroundWindow {
+function set-foregroundWindow {
 $signature = @’ 
 [DllImport("user32.dll")] 
 public static extern bool SetWindowPos( 
@@ -18,12 +18,12 @@ $handle = (Get-Process -id $Global:PID).MainWindowHandle
 $alwaysOnTop = New-Object -TypeName System.IntPtr -ArgumentList (-1) 
 $type::SetWindowPos($handle, $alwaysOnTop, 0, 0, 0, 0, 0x0003)
 Sleep -s 20
-disable-Window
+disable-window
 }
 # ---------- ---------- ---------- --------- --------- #
  # -- --- --- --- DISABLE-WINDOW --- --- --- --- --- #
 # ---------- ---------- ---------- --------- --------- #
-function disable-Window {
+function disable-window {
 # Calling user32.dll methods for Windows and Menus
 $MethodsCall = '
 [DllImport("user32.dll")] public static extern long GetSystemMenu(IntPtr hWnd, bool bRevert);
@@ -212,7 +212,7 @@ function get-reboot {
 	del "$env:windir\WinGrade.bat" -ErrorAction SilentlyContinue
 	del "$env:windir\WinGrade.ps1" -ErrorAction SilentlyContinue
         schtasks /delete /F /TN "WinGrade"
-        set-ForegroundWindow
+        set-foregroundWindow
     }
 }
-set-ForegroundWindow
+set-foregroundWindow
