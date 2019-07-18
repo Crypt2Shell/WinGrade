@@ -17,10 +17,6 @@ $type = Add-Type -MemberDefinition $signature -Name SetWindowPosition -Namespace
 $handle = (Get-Process -id $Global:PID).MainWindowHandle 
 $alwaysOnTop = New-Object -TypeName System.IntPtr -ArgumentList (-1) 
 $type::SetWindowPos($handle, $alwaysOnTop, 0, 0, 0, 0, 0x0003)
-Restart-Computer -Force
-# Load MessageBox
-[System.Reflection.Assembly]::LoadWithPartialName("System.Windows.Forms")
-[System.Windows.Forms.MessageBox]::Show("Reboot","Reboot",0)
 disable-window
 }
 # ---------- ---------- ---------- --------- --------- #
