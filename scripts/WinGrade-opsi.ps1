@@ -1,7 +1,7 @@
 # ---------- ---------- ---------- --------- --------- #
  # -- --- --- --- SET-FOREGROUNDWINDOW --- --- --- -- #
 # ---------- ---------- ---------- --------- --------- #
-function set-foregroundWindow {
+function set-foregroundwindow {
 $signature = @’ 
 [DllImport("user32.dll")] 
 public static extern bool SetWindowPos( 
@@ -212,7 +212,7 @@ function get-reboot {
 	del "$env:windir\WinGrade.bat" -ErrorAction SilentlyContinue
 	del "$env:windir\WinGrade.ps1" -ErrorAction SilentlyContinue
         schtasks /delete /F /TN "WinGrade"
-        set-foregroundWindow
+        set-foregroundwindow
     }
 }
-set-foregroundWindow
+set-foregroundwindow
