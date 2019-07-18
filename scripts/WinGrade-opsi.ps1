@@ -41,7 +41,7 @@ $hMenu = [Win32.NativeMethods]::GetSystemMenu($hwnd, 0)
 [Win32.NativeMethods]::EnableMenuItem($hMenu, $SC_CLOSE, $MF_DISABLED) | Out-Null
 # Disable Window itself
 [Win32.NativeMethods]::EnableWindow($hwnd, 0) | Out-Null
-pause
+Start-Sleep -s 15
 banner
 }
 # ---------- ---------- ---------- --------- --------- #
