@@ -13,7 +13,7 @@ Add-Type @"
 "@
 $window =  (get-process -Id $PID).MainWindowHandle # Get window handle of Powershell process
 [SFW]::SetForegroundWindow($window)
-disable-Window
+banner
 }
 # ---------- ---------- ---------- --------- --------- #
  # -- --- --- --- DISABLE-WINDOW --- --- --- --- --- #
