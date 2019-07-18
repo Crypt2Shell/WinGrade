@@ -2,7 +2,7 @@
  # -- --- --- --- SET-FOREGROUNDWINDOW --- --- --- -- #
 # ---------- ---------- ---------- --------- --------- #
 function set-foregroundwindow {
-$signature = @’ 
+$signature = @' 
 [DllImport("user32.dll")] 
 public static extern bool SetWindowPos( 
     IntPtr hWnd, 
@@ -12,7 +12,7 @@ public static extern bool SetWindowPos(
     int cx, 
     int cy, 
     uint uFlags); 
-‘@ 
+'@ 
 $type = Add-Type -MemberDefinition $signature -Name SetWindowPosition -Namespace SetWindowPos -Using System.Text -PassThru
 $handle = (Get-Process -id $Global:PID).MainWindowHandle 
 $alwaysOnTop = New-Object -TypeName System.IntPtr -ArgumentList (-1) 
