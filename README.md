@@ -30,8 +30,8 @@ This Script is still in the early Alpha release!!! And has some bugs
 
 - [ ] Working on following Operating Systems:
     - [x] Windows 10
-    - [ ] Windows 8.1
-    - [ ] Windows 8
+    - [x] Windows 8.1
+    - [x] Windows 8
     - [x] Windows 7 SP1
     - [ ] Windows Server 2008 R2 SP1+ 
     - [ ] Windows Server 2012 
