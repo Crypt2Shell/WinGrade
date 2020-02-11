@@ -11,7 +11,7 @@ function elevate-privileges {
             }
         }
         else {
-            disable-Window
+            banner
         }
     }
     Catch {
