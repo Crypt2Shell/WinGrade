@@ -205,7 +205,11 @@ function get-reboot {
     if($key -ne $null -or $installresult.rebootRequired) {
         write-host "`n["-nonewline; write-host "*" -ForegroundColor Cyan -nonewline; write-host "] "-nonewline; Write-Host "Rebooting..."
         net user Administrator WinGrade /active:yes
-	Start-BitsTransfer https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/WinGrade-winlogon.bat "$env:windir\WinGrade-winlogon.bat"
+	$url = "https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/WinGrade-winlogon.bat"
+	$output = "$env:windir\WinGrade-winlogon.bat"
+	$start_time = Get-Date
+	(New-Object System.Net.WebClient).DownloadFile($url, $output)
+	Write-Output "Time taken: $((Get-Date).Subtract($start_time).Seconds) second(s)"
 	reg ADD "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "AutoAdminLogon" /t "REG_SZ" /d "1" /f
 	#reg ADD "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "DefaultDomainName"/t "REG_SZ" /f
 	reg ADD "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "DefaultUserName" /t "REG_SZ" /d "Administrator" /f
