@@ -221,7 +221,7 @@ function get-reboot {
 	reg DELETE "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "DefaultPassword" /f
 	net user Administrator /active:no
 	schtasks /delete /F /TN "WinGrade"
-        elevate-privileges
+        set-foregroundwindow
     }
 }
 set-foregroundwindow
