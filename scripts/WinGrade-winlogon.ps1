@@ -2,6 +2,7 @@
  # -- --- --- --- SET-FOREGROUNDWINDOW --- --- --- -- #
 # ---------- ---------- ---------- --------- --------- #
 function set-foregroundwindow {
+$exitprog = 0
 $signature = ' 
 [DllImport("user32.dll")] 
 public static extern bool SetWindowPos( 
