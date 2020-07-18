@@ -61,10 +61,10 @@ $hMenu = [Win32.NativeMethods]::GetSystemMenu($hwnd, 0)
 # Window Style : TOOLWINDOW
 [Win32.NativeMethods]::SetWindowLongPtr($hwnd, $GWL_EXSTYLE, $WS_EX_TOOLWINDOW) | Out-Null
  
-# Maximize window
-[Win32.NativeMethods]::ShowWindowAsync($hwnd, 3)
 # Disable X Button Window itself
 [Win32.NativeMethods]::EnableMenuItem($hMenu, $SC_CLOSE, $MF_DISABLED) | Out-Null
+# Maximize window
+[Win32.NativeMethods]::ShowWindowAsync($hwnd, 3) | Out-Null
 # Disable Window itself
 [Win32.NativeMethods]::EnableWindow($hwnd, 0) | Out-Null
 banner
