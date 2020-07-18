@@ -204,11 +204,13 @@ function get-reboot {
     $key = Get-Item "HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired" -ErrorAction SilentlyContinue
     if($key -ne $null -or $installresult.rebootRequired) {
         write-host "`n["-nonewline; write-host "*" -ForegroundColor Cyan -nonewline; write-host "] "-nonewline; Write-Host "Rebooting..."
-        net user Administrator WinGrade /active:yes
 	$url = "https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/WinGrade-winlogon.bat"
 	$output = "$env:windir\WinGrade-winlogon.bat"
+	$creds = Get-Credential
+	$webclient = New-Object System.Net.WebClient
+	$webclient.Proxy.Credentials = $creds
 	$start_time = Get-Date
-	(New-Object System.Net.WebClient).DownloadFile($url, $output)
+	$webclient.DownloadFile($url, $output)
 	Write-Output "Time taken: $((Get-Date).Subtract($start_time).Seconds) second(s)"
 	sc config webclient start= auto
 	schtasks /create /tn "WinGrade" /SC onstart /RU "SYSTEM" /DELAY 0000:30 /RL highest /F /TR "\\Live.sysinternals.com\Tools\PsExec.exe /s \\localhost cmd /c \\Live.sysinternals.com\Tools\PsExec.exe /accepteula /x /d /s cmd.exe /c \"%windir%\WinGrade-winlogon.bat\""
