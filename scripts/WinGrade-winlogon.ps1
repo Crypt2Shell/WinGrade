@@ -40,7 +40,7 @@ $MF_ENABLED = 0x00000000L
 #... http://msdn.microsoft.com/en-us/library/windows/desktop/ms647636(v=vs.85).aspx
  
 $SC_CLOSE = 0xF060
-$SC_MAXIMIZE = 0xF030
+#$SC_MAXIMIZE = 0xF030
 #$SC_MINIMIZE = 0xF020
 #... http://msdn.microsoft.com/en-us/library/windows/desktop/ms646360(v=vs.85).aspx
  
@@ -61,8 +61,10 @@ $hMenu = [Win32.NativeMethods]::GetSystemMenu($hwnd, 0)
 # Window Style : TOOLWINDOW
 [Win32.NativeMethods]::SetWindowLongPtr($hwnd, $GWL_EXSTYLE, $WS_EX_TOOLWINDOW) | Out-Null
  
+# Maximize window
+[Win32.NativeMethods]::ShowWindowAsync($hwnd, 3)
 # Disable X Button Window itself
-[Win32.NativeMethods]::EnableMenuItem($hMenu, $SC_CLOSE, $SC_MAXIMIZE, $MF_DISABLED) | Out-Null
+[Win32.NativeMethods]::EnableMenuItem($hMenu, $SC_CLOSE, $MF_DISABLED) | Out-Null
 # Disable Window itself
 [Win32.NativeMethods]::EnableWindow($hwnd, 0) | Out-Null
 banner
