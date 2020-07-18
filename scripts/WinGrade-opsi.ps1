@@ -30,6 +30,7 @@ $MethodsCall = '
 [DllImport("user32.dll")] public static extern bool EnableMenuItem(long hMenuItem, long wIDEnableItem, long wEnable);
 [DllImport("user32.dll")] public static extern long SetWindowLongPtr(long hWnd, long nIndex, long dwNewLong);
 [DllImport("user32.dll")] public static extern bool EnableWindow(long hWnd, int bEnable);
+[DllImport("user32.dll")] public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
 '
 # Create a new namespace for the Methods to be able to call them
 Add-Type -MemberDefinition $MethodsCall -name NativeMethods -namespace Win32
@@ -61,6 +62,8 @@ $hMenu = [Win32.NativeMethods]::GetSystemMenu($hwnd, 0)
  
 # Disable X Button Window itself
 [Win32.NativeMethods]::EnableMenuItem($hMenu, $SC_CLOSE, $MF_DISABLED) | Out-Null
+# Maximize window
+[Win32.NativeMethods]::ShowWindowAsync($hwnd, 3) | Out-Null
 # Disable Window itself
 [Win32.NativeMethods]::EnableWindow($hwnd, 0) | Out-Null
 banner
