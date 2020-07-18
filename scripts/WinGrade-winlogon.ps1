@@ -62,7 +62,7 @@ $hMenu = [Win32.NativeMethods]::GetSystemMenu($hwnd, 0)
 [Win32.NativeMethods]::SetWindowLongPtr($hwnd, $GWL_EXSTYLE, $WS_EX_TOOLWINDOW) | Out-Null
  
 # Disable X Button Window itself
-[Win32.NativeMethods]::EnableMenuItem($hMenu, $SC_CLOSE, $MF_DISABLED) | Out-Null
+[Win32.NativeMethods]::EnableMenuItem($hMenu, $SC_CLOSE, $SC_MAXIMIZE,$MF_DISABLED) | Out-Null
 # Disable Window itself
 [Win32.NativeMethods]::EnableWindow($hwnd, 0) | Out-Null
 banner
