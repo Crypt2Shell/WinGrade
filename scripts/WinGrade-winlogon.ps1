@@ -222,6 +222,7 @@ function get-reboot {
     else { 
         write-host "`n["-nonewline; write-host "*" -ForegroundColor Cyan -nonewline; write-host "] "-nonewline; Write-Host "No reboot required."
 	del "$env:windir\WinGrade-winlogon.bat" -ErrorAction SilentlyContinue
+	del "$env:tmp\WinGrade.bat" -ErrorAction SilentlyContinue
 	schtasks /delete /F /TN "WinGrade"
 	sc config webclient start=demand
         banner
