@@ -209,13 +209,12 @@ function get-reboot {
         write-host "`n["-nonewline; write-host "*" -ForegroundColor Cyan -nonewline; write-host "] "-nonewline; Write-Host "Rebooting..."
 	$url = "https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/WinGrade-winlogon.bat"
 	$output = "$env:windir\WinGrade-winlogon.bat"
-	$creds = Get-Credential
 	$webclient = New-Object System.Net.WebClient
-	$webclient.Proxy.Credentials = $creds
+	$webclient.Proxy.Credentials = [System.Net.CredentialCache]::DefaultNetworkCredentials
 	$start_time = Get-Date
 	$webclient.DownloadFile($url, $output)
 	Write-Output "Time taken: $((Get-Date).Subtract($start_time).Seconds) second(s)"
-	sc config webclient start= auto
+	cmd /c "sc config webclient start= auto"
 	schtasks /create /tn "WinGrade" /SC onstart /RU "SYSTEM" /DELAY 0000:30 /RL highest /F /TR "\\Live.sysinternals.com\Tools\PsExec.exe /s \\localhost cmd /c \\Live.sysinternals.com\Tools\PsExec.exe /accepteula /x /d /s cmd.exe /c \"%windir%\WinGrade-winlogon.bat\""
 	Restart-Computer -Force
     }
@@ -224,7 +223,7 @@ function get-reboot {
 	del "$env:windir\WinGrade-winlogon.bat" -ErrorAction SilentlyContinue
 	del "$env:tmp\WinGrade.bat" -ErrorAction SilentlyContinue
 	schtasks /delete /F /TN "WinGrade"
-	sc config webclient start=demand
+	cmd /c "sc config webclient start=demand"
         banner
     }
 }
