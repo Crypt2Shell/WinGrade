@@ -225,7 +225,7 @@ function get-reboot {
 	del "$env:windir\WinGrade-winlogon.bat" -ErrorAction SilentlyContinue
 	schtasks /delete /F /TN "WinGrade"
 	sc config webclient start=demand
-        set-foregroundwindow
+        banner
     }
 }
 set-foregroundwindow
