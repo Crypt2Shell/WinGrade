@@ -215,7 +215,7 @@ function get-reboot {
 	del "$env:windir\WinGrade.bat" -ErrorAction SilentlyContinue
 	del "$env:windir\WinGrade.ps1" -ErrorAction SilentlyContinue
         schtasks /delete /F /TN "WinGrade"
-        set-foregroundwindow
+        banner
     }
 }
 set-foregroundwindow
