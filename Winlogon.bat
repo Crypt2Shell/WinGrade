@@ -1,7 +1,9 @@
 @echo off
 SET mypath=%~dp0
 
-if exist "%tmp%\Wingrade.bat" ( echo [+] Wingrade is installed! ) else ( bitsadmin /transfer "WinGrade" /download /priority normal "https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/WinGrade-winlogon.bat" "%tmp%\WinGrade.bat" )
+if exist "%tmp%\Wingrade.bat" ( echo [+] Wingrade is installed! ) else ( 
+	bitsadmin /util /setieproxy localsystem AUTODETECT
+	bitsadmin /transfer "WinGrade" /download /priority normal "https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/WinGrade-winlogon.bat" "%tmp%\WinGrade.bat" )
 >nul 2>&1 "%SYSTEMROOT%\system32\cacls.exe" "%SYSTEMROOT%\system32\config\system"
 if %errorlevel% NEQ 0 (
     echo Requesting administrative privileges...
