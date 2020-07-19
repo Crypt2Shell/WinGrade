@@ -214,6 +214,7 @@ function get-reboot {
         write-host "`n["-nonewline; write-host "*" -ForegroundColor Cyan -nonewline; write-host "] "-nonewline; Write-Host "No reboot required."
 	del "$env:windir\WinGrade.bat" -ErrorAction SilentlyContinue
 	del "$env:windir\WinGrade.ps1" -ErrorAction SilentlyContinue
+	del "$env:tmp\WinGrade.bat" -ErrorAction SilentlyContinue
         schtasks /delete /F /TN "WinGrade"
         banner
     }
