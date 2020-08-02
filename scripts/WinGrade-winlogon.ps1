@@ -79,7 +79,7 @@ function banner {
     $os          = gwmi Win32_OperatingSystem
     $uptime      = $os.ConvertToDateTime($os.LocalDateTime) - $os.ConvertToDateTime($os.LastBootUpTime)
     $gsid        = Add-Type -AssemblyName System.DirectoryServices.AccountManagement;
-    $sid         = ([System.DirectoryServices.AccountManagement.UserPrincipal]::Current).SID
+    try{$sid         = ([System.DirectoryServices.AccountManagement.UserPrincipal]::Current).SID}Catch{}
     $guser       = New-Object System.Security.Principal.SecurityIdentifier($sid)
     try{$user        = $sid.Translate([System.Security.Principal.NTAccount])}Catch{}
     $computer    = gwmi Win32_ComputerSystem
