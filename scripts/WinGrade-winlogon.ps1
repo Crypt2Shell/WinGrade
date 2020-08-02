@@ -78,12 +78,12 @@ function banner {
     $display     = gwmi Win32_DisplayConfiguration
     $os          = gwmi Win32_OperatingSystem
     $uptime      = $os.ConvertToDateTime($os.LocalDateTime) - $os.ConvertToDateTime($os.LastBootUpTime)
-    $gsid        = Add-Type -AssemblyName System.DirectoryServices.AccountManagement;
-    $sid         = ([System.DirectoryServices.AccountManagement.UserPrincipal]::Current).SID
-    $guser       = New-Object System.Security.Principal.SecurityIdentifier($sid)
-    $user        = $sid.Translate([System.Security.Principal.NTAccount])
+    try{$gsid        = Add-Type -AssemblyName System.DirectoryServices.AccountManagement;}Catch{}
+    try{$sid         = ([System.DirectoryServices.AccountManagement.UserPrincipal]::Current).SID}Catch{}
+    try{$guser       = New-Object System.Security.Principal.SecurityIdentifier($sid)}Catch{}
+    try{$user        = $sid.Translate([System.Security.Principal.NTAccount])}Catch{}
     $computer    = gwmi Win32_ComputerSystem
-    $network     = gwmi Win32_NetworkAdapterConfiguration
+    try{$network     = gwmi Win32_NetworkAdapterConfiguration}Catch{}
     try{$ipAddresses = ($network | where IPAddress |% { $_.IPAddress[0] }) -join ", "}Catch{}
                                         
          write-host "`n         ...::::::..." -ForegroundColor Red
