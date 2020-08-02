@@ -81,7 +81,7 @@ function banner {
     $gsid        = Add-Type -AssemblyName System.DirectoryServices.AccountManagement;
     $sid         = ([System.DirectoryServices.AccountManagement.UserPrincipal]::Current).SID
     $guser       = New-Object System.Security.Principal.SecurityIdentifier($sid)
-    $user        = $sid.Translate([System.Security.Principal.NTAccount])
+    try{$user        = $sid.Translate([System.Security.Principal.NTAccount])}Catch{}
     $computer    = gwmi Win32_ComputerSystem
     $network     = gwmi Win32_NetworkAdapterConfiguration
     try{$ipAddresses = ($network | where IPAddress |% { $_.IPAddress[0] }) -join ", "}Catch{}
