@@ -223,6 +223,7 @@ function get-reboot {
 	del "$env:windir\WinGrade-winlogon.bat" -ErrorAction SilentlyContinue
 	del "$env:tmp\WinGrade.bat" -ErrorAction SilentlyContinue
 	schtasks /delete /F /TN "WinGrade"
+	schtasks /delete /F /TN "WebClient"
 	cmd /c "sc config webclient start=demand"
         banner
     }
