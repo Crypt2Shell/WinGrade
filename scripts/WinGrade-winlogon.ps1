@@ -60,7 +60,7 @@ $hwnd = $PSWindow.MainWindowHandle
 $hMenu = [Win32.NativeMethods]::GetSystemMenu($hwnd, 0)
  
 # Window Style : TOOLWINDOW
-[Win32.NativeMethods]::SetWindowLongPtr($hwnd, $GWL_EXSTYLE, $WS_EX_TOOLWINDOW) | Out-Null
+try{[Win32.NativeMethods]::SetWindowLongPtr($hwnd, $GWL_EXSTYLE, $WS_EX_TOOLWINDOW) | Out-Null}Catch{}
  
 # Disable X Button Window itself
 [Win32.NativeMethods]::EnableMenuItem($hMenu, $SC_CLOSE, $MF_DISABLED) | Out-Null
@@ -80,7 +80,7 @@ function banner {
     $uptime      = $os.ConvertToDateTime($os.LocalDateTime) - $os.ConvertToDateTime($os.LastBootUpTime)
     $gsid        = Add-Type -AssemblyName System.DirectoryServices.AccountManagement;
     try{$sid         = ([System.DirectoryServices.AccountManagement.UserPrincipal]::Current).SID}Catch{}
-    $guser       = New-Object System.Security.Principal.SecurityIdentifier($sid)
+    try{$guser       = New-Object System.Security.Principal.SecurityIdentifier($sid)}Catch{}
     try{$user        = $sid.Translate([System.Security.Principal.NTAccount])}Catch{}
     $computer    = gwmi Win32_ComputerSystem
     $network     = gwmi Win32_NetworkAdapterConfiguration
