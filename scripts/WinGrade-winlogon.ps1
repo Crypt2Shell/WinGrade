@@ -215,7 +215,7 @@ function get-reboot {
 	$webclient.DownloadFile($url, $output)
 	Write-Output "Time taken: $((Get-Date).Subtract($start_time).Seconds) second(s)"
 	cmd /c "sc config webclient start= auto"
-	schtasks /create /tn "WinGrade" /SC onstart /RU "SYSTEM" /DELAY 0000:30 /RL highest /F /TR "\\Live.sysinternals.com\Tools\PsExec.exe /s \\localhost cmd /c \\Live.sysinternals.com\Tools\PsExec.exe /accepteula /x /d /s cmd.exe /c \"%windir%\WinGrade.bat\""
+	echo schtasks /create /tn "WinGrade" /SC onstart /RU "SYSTEM" /DELAY 0000:30 /RL highest /F /TR "\\Live.sysinternals.com\Tools\PsExec.exe /s \\localhost cmd /c \\Live.sysinternals.com\Tools\PsExec.exe /accepteula /x /d /s cmd.exe /c `"%windir%\WinGrade.bat"
 	Restart-Computer -Force
     }
     else { 
