@@ -169,7 +169,7 @@ function get-notification {
             $Notification.BalloonTipTitle = "Achtung! $Env:USERNAME" 
             $Notification.BalloonTipText = 'Es wurden Windows updates installiert! [' + $UpdateSuccessful + '/' + $($NumUp) + ' ]'
             $Notification.Visible = $true 
-            $Notification.ShowBalloonTip(5000)
+            $Notification.ShowBalloonTip(30000)
 	    get-reboot
         }
         else
@@ -182,7 +182,7 @@ function get-notification {
             $Notification.BalloonTipTitle = "Attention! $Env:USERNAME" 
             $Notification.BalloonTipText = 'Windows updates were installed! [' + $UpdateSuccessful + '/' + $($NumUp) + ' ]'
             $Notification.Visible = $true 
-            $Notification.ShowBalloonTip(5000)
+            $Notification.ShowBalloonTip(30000)
 	    get-reboot
         }
     }
