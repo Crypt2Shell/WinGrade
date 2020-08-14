@@ -151,7 +151,7 @@ function get-installedupdate {
     $result = $searcher.Search("IsInstalled=1 and Type='Software'" )
     $result.Updates | select Title, IsInstalled, LastDeploymentChangeTime | Out-String | Write-Host -ForegroundColor DarkCyan
     write-host "["-nonewline; write-host "!" -ForegroundColor Yellow -nonewline; write-host "] "-nonewline; Write-Host "Waiting ...[15s]" -NoNewline; sleep -s 15
-    get-notification
+    if ($UpdateSuccessful -ne 0){ get-notification }else{ get-reboot }
 }
 # ---------- ---------- ---------- --------- --------- #
  # ---- --- --- --- GET-NOTIFICATION --- --- --- ---- #
