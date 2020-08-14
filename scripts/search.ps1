@@ -167,7 +167,7 @@ function get-notification {
             $Notification.Icon = [System.Drawing.Icon]::ExtractAssociatedIcon($path) 
             $Notification.BalloonTipIcon = [System.Windows.Forms.ToolTipIcon]::Info
             $Notification.BalloonTipTitle = "Achtung! $Env:USERNAME" 
-            $Notification.BalloonTipText = 'Es wurden Windows updates installiert! [' + $UpdateSuccessful + '/' + $($result.Updates.count) + ' ]'
+            $Notification.BalloonTipText = 'Es wurden Windows updates installiert! [' + $UpdateSuccessful + '/' + $($NumUp) + ' ]'
             $Notification.Visible = $true 
             $Notification.ShowBalloonTip(5000)
 	    get-reboot
@@ -180,7 +180,7 @@ function get-notification {
             $Notification.Icon = [System.Drawing.Icon]::ExtractAssociatedIcon($path) 
             $Notification.BalloonTipIcon = [System.Windows.Forms.ToolTipIcon]::Info
             $Notification.BalloonTipTitle = "Attention! $Env:USERNAME" 
-            $Notification.BalloonTipText = 'Windows updates were installed! [' + $UpdateSuccessful + '/' + $($result.Updates.count) + ' ]'
+            $Notification.BalloonTipText = 'Windows updates were installed! [' + $UpdateSuccessful + '/' + $($NumUp) + ' ]'
             $Notification.Visible = $true 
             $Notification.ShowBalloonTip(5000)
 	    get-reboot
