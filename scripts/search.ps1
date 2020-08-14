@@ -3,6 +3,7 @@
 # ---------- ---------- ---------- --------- --------- #
 function elevate-privileges {
 	$exitprog = 0
+	$UpdateSuccessful = 0
     try {
         if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
             if ([int](Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty BuildNumber) -ge 6000) {
@@ -130,6 +131,7 @@ function install-update {
 
         if ($installresult.ResultCode -eq 2) {
             Write-Host "." -ForegroundColor Green -NoNewline
+	    $UpdateSuccessful += 1
         }
         else {
             Write-Host "." -ForegroundColor Red -NoNewline
@@ -149,7 +151,48 @@ function get-installedupdate {
     $result = $searcher.Search("IsInstalled=1 and Type='Software'" )
     $result.Updates | select Title, IsInstalled, LastDeploymentChangeTime | Out-String | Write-Host -ForegroundColor DarkCyan
     write-host "["-nonewline; write-host "!" -ForegroundColor Yellow -nonewline; write-host "] "-nonewline; Write-Host "Waiting ...[15s]" -NoNewline; sleep -s 15
-    get-reboot
+    get-notification
+}
+
+# ---------- ---------- ---------- --------- --------- #
+ # ---- --- --- --- GET-NOTIFICATION --- --- --- ---- #
+# ---------- ---------- ---------- --------- --------- #
+function get-notification {
+    if ([System.Environment]::OSVersion.Version.Major -eq 10)
+    {
+        if ([CultureInfo]::InstalledUICulture.Name -contains "de-DE")
+        {
+            Add-Type -AssemblyName System.Windows.Forms 
+            $global:Notification = New-Object System.Windows.Forms.NotifyIcon
+            $path = (Get-Process -id $pid).Path
+            $Notification.Icon = [System.Drawing.Icon]::ExtractAssociatedIcon($path) 
+            $Notification.BalloonTipIcon = [System.Windows.Forms.ToolTipIcon]::Info
+            $Notification.BalloonTipTitle = "Achtung! $Env:USERNAME" 
+            $Notification.BalloonTipText = 'Es wurden Windows updates installiert! [' + $UpdateSuccessful + '/' + $($result.Updates.count) + ' ]'
+            $Notification.Visible = $true 
+            $Notification.ShowBalloonTip(5000)
+	    get-reboot
+        }
+        else
+        {
+            Add-Type -AssemblyName System.Windows.Forms 
+            $global:Notification = New-Object System.Windows.Forms.NotifyIcon
+            $path = (Get-Process -id $pid).Path
+            $Notification.Icon = [System.Drawing.Icon]::ExtractAssociatedIcon($path) 
+            $Notification.BalloonTipIcon = [System.Windows.Forms.ToolTipIcon]::Info
+            $Notification.BalloonTipTitle = "Attention! $Env:USERNAME" 
+            $Notification.BalloonTipText = 'Windows updates were installed! [' + $UpdateSuccessful + '/' + $($result.Updates.count) + ' ]'
+            $Notification.Visible = $true 
+            $Notification.ShowBalloonTip(5000)
+	    get-reboot
+        }
+    }
+    else
+    {
+        Write-Host "[!] This Notification is not for older Windows Systems!"
+        Write-Host "[*] Continue ..."
+	get-reboot
+    }
 }
 # ---------- ---------- ---------- --------- --------- #
  # --- --- --- --- --- GET-REBOOT --- --- --- --- --- #
