@@ -218,7 +218,7 @@ function get-notification {
             $Notification.BalloonTipTitle = "Achtung! $Env:USERNAME" 
             $Notification.BalloonTipText = 'Es wurden Windows updates installiert! [' + $UpdateSuccessful + '/' + $($NumUp) + ' ]'
             $Notification.Visible = $true 
-            $Notification.ShowBalloonTip(5000)
+            $Notification.ShowBalloonTip(30000)
 	          banner
         }
         else
@@ -231,7 +231,7 @@ function get-notification {
             $Notification.BalloonTipTitle = "Attention! $Env:USERNAME" 
             $Notification.BalloonTipText = 'Windows updates were installed! [' + $UpdateSuccessful + '/' + $($NumUp) + ' ]'
             $Notification.Visible = $true 
-            $Notification.ShowBalloonTip(5000)
+            $Notification.ShowBalloonTip(30000)
 	          banner
         }
     }
@@ -258,7 +258,7 @@ function get-notification-installed {
             $Notification.BalloonTipTitle = "Achtung! $Env:USERNAME" 
             $Notification.BalloonTipText = 'Du bist auf dem aktuellsten Stand!'
             $Notification.Visible = $true 
-            $Notification.ShowBalloonTip(5000)
+            $Notification.ShowBalloonTip(30000)
 	          banner
         }
         else
@@ -271,7 +271,7 @@ function get-notification-installed {
             $Notification.BalloonTipTitle = "Attention! $Env:USERNAME" 
             $Notification.BalloonTipText = 'You are up to date!'
             $Notification.Visible = $true 
-            $Notification.ShowBalloonTip(5000)
+            $Notification.ShowBalloonTip(30000)
 	          banner
         }
     }
