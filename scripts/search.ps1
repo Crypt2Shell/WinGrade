@@ -153,7 +153,6 @@ function get-installedupdate {
     write-host "["-nonewline; write-host "!" -ForegroundColor Yellow -nonewline; write-host "] "-nonewline; Write-Host "Waiting ...[15s]" -NoNewline; sleep -s 15
     get-notification
 }
-
 # ---------- ---------- ---------- --------- --------- #
  # ---- --- --- --- GET-NOTIFICATION --- --- --- ---- #
 # ---------- ---------- ---------- --------- --------- #
