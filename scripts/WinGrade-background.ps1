@@ -68,7 +68,7 @@ try{[Win32.NativeMethods]::SetWindowLongPtr($hwnd, $GWL_EXSTYLE, $WS_EX_TOOLWIND
 # Maximize window
 #[Win32.NativeMethods]::ShowWindowAsync($hwnd, 3) | Out-Null
 # Hide Window completely
-[Win32.NativeMethods]::ShowWindowAsync($hwnd, [ShowStates]::Hide) | Out-Null
+[Win32.NativeMethods]::ShowWindowAsync($hwnd, [ShowStates]::0) | Out-Null
 # Disable Window itself
 [Win32.NativeMethods]::EnableWindow($hwnd, 0) | Out-Null
 banner
