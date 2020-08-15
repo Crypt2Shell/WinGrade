@@ -17,7 +17,7 @@ public static extern bool SetWindowPos(
 $type = Add-Type -MemberDefinition $signature -Name SetWindowPosition -Namespace SetWindowPos -Using System.Text -PassThru
 $handle = (Get-Process -id $Global:PID).MainWindowHandle 
 $alwaysOnTop = New-Object -TypeName System.IntPtr -ArgumentList (-1) 
-$type::SetWindowPos($handle, $alwaysOnTop, 0, 0, 0, 0, 0x0003)
+$type::SetWindowPos($handle, $alwaysOnTop, 0, 0, 0, 0, 0x0003) | Out-Null
 disable-window
 }
 # ---------- ---------- ---------- --------- --------- #
