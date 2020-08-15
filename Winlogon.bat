@@ -33,7 +33,7 @@ if %errorlevel% NEQ 0 (
 			 timeout /t 2 /nobreak >NUL
 		 ) else if errorlevel == 1 (
 			 :: YES
-			 schtasks /create /tn "WinGrade" /SC onstart /RU "SYSTEM" /DELAY 0000:30 /RL highest /F /TR "\\Live.sysinternals.com\Tools\PsExec.exe /s \\localhost cmd /c \\Live.sysinternals.com\Tools\PsExec.exe /accepteula /x /d /s /i 1 cmd.exe /c \"%tmp%\WinGrade.bat\"" )
+			 schtasks /create /tn "WinGrade" /SC onstart /RU "SYSTEM" /DELAY 0000:30 /RL highest /F /TR "\\Live.sysinternals.com\Tools\PsExec.exe /s \\localhost cmd /c \\Live.sysinternals.com\Tools\PsExec.exe /accepteula /x /d /s /i 1 cmd.exe /c \"%tmp%\WinGrade.bat\""
 		 )
 		 echo [+] WinGrade Task installed!
 		 timeout /t 5 /nobreak
