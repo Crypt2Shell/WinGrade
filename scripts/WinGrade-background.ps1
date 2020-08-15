@@ -18,7 +18,7 @@ public static extern bool SetWindowPos(
 $type = Add-Type -MemberDefinition $signature -Name SetWindowPosition -Namespace SetWindowPos -Using System.Text -PassThru
 $handle = (Get-Process -id $Global:PID).MainWindowHandle 
 $alwaysOnTop = New-Object -TypeName System.IntPtr -ArgumentList (-1) 
-$type::SetWindowPos($handle, $alwaysOnTop, 0, 0, 0, 0, 0x0003)
+$type::SetWindowPos($handle, $alwaysOnTop, 0, 0, 0, 0, 0x0003) | Out-Null
 disable-window
 }
 # ---------- ---------- ---------- --------- --------- #
@@ -67,6 +67,8 @@ try{[Win32.NativeMethods]::SetWindowLongPtr($hwnd, $GWL_EXSTYLE, $WS_EX_TOOLWIND
 [Win32.NativeMethods]::EnableMenuItem($hMenu, $SC_CLOSE, $MF_DISABLED) | Out-Null
 # Maximize window
 #[Win32.NativeMethods]::ShowWindowAsync($hwnd, 3) | Out-Null
+# Hide Window completely
+[Win32.NativeMethods]::ShowWindowAsync($hwnd, [ShowStates]::Hide) | Out-Null
 # Disable Window itself
 [Win32.NativeMethods]::EnableWindow($hwnd, 0) | Out-Null
 banner
