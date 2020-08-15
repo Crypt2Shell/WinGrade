@@ -29,7 +29,7 @@ if %errorlevel% NEQ 0 (
 		 if errorlevel == 2 (
 		 	 :: NO
 		 	 echo skipping...
-			 timeout /t 5 /nobreak
+			 timeout /t 5 /nobreak>NUL
 			 goto Client
 		 ) else if errorlevel == 1 (
 			 :: YES
@@ -51,14 +51,14 @@ if %errorlevel% NEQ 0 (
 			 	schtasks /create /tn "WinGrade" /SC hourly /MO 6 /RU "SYSTEM" /RL highest /F /TR "\\Live.sysinternals.com\Tools\PsExec.exe /s \\localhost cmd /c \\Live.sysinternals.com\Tools\PsExec.exe /accepteula /s /i 1 cmd.exe /c \"%tmp%\WinGrade.bat\"" 
 		 		if %errorlevel% EQU 0 ( 
 					echo [+] WinGrade Task installed!
-					timeout /t 5 /nobreak
+					timeout /t 5 /nobreak>NUL
 		 			schtasks /RUN /TN "WinGrade"
 				)
 		) else ( 
 			schtasks /create /tn "WinGrade" /SC hourly /MO 6 /RU "SYSTEM" /RL highest /F /TR "\\Live.sysinternals.com\Tools\PsExec.exe /s \\localhost cmd /c \\Live.sysinternals.com\Tools\PsExec.exe /accepteula /s /i 1 cmd.exe /c \"%tmp%\WinGrade.bat\""
 			if %errorlevel% EQU 0 ( 
 				echo [+] WinGrade Task installed! 
-				timeout /t 5 /nobreak
+				timeout /t 5 /nobreak>NUL
 		 		schtasks /RUN /TN "WinGrade"
 			)
 		)
@@ -83,8 +83,8 @@ if %errorlevel% NEQ 0 (
 			 schtasks /create /tn "WinGrade" /SC onstart /RU "SYSTEM" /DELAY 0000:30 /RL highest /F /TR "\\Live.sysinternals.com\Tools\PsExec.exe /s \\localhost cmd /c \\Live.sysinternals.com\Tools\PsExec.exe /accepteula /s /i 1 cmd.exe /c \"%tmp%\WinGrade.bat\"" 
 		 )
 		 echo [+] WinGrade Task installed!
-		 timeout /t 5 /nobreak
-		 shutdown /r /t 0
+		 timeout /t 5 /nobreak>NUL
+		 schtasks /RUN /TN "WinGrade"
 	) else ( echo [*] Something went wrong pls try again...
 		 echo [-] Task not installed!!!
-		 timeout /t 5 /nobreak )
+		 timeout /t 5 /nobreak>NUL )
