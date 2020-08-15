@@ -125,7 +125,7 @@ function install-update {
     if ($result.Updates.Count -eq 0) {
         write-host "`t[" -nonewline; write-host "*" -ForegroundColor Cyan -nonewline; write-host "] " -nonewline; Write-Host "No updates available."
         try {
-	        if ($exitprog -eq 5) {
+	        if ($exitprog -eq 1) {
 	            Exit
 	        }
             $exitprog++
