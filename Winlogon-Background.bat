@@ -24,7 +24,7 @@ if %errorlevel% NEQ 0 (
 	
 :Server
 	:: check Windows Server
-	set Edition=powershell "Get-WindowsEdition -Online | select -ExpandProperty Edition | Format-Table -HideTableHeaders"
+	set Edition=powershell "try{Get-WindowsEdition -Online | select -ExpandProperty Edition | Format-Table -HideTableHeaders}Catch{}"
 	
 	:: check if string contains "Server"
 	@setlocal enableextensions enabledelayedexpansion
