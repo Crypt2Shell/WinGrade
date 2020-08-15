@@ -20,6 +20,42 @@ if %errorlevel% NEQ 0 (
 
 :gotAdmin
 	sc config webclient start= auto
+	goto Server
+	
+:Server
+	:: check Windows Server
+	set Edition=powershell "Get-WindowsEdition -Online | select -ExpandProperty Edition | Format-Table -HideTableHeaders"
+	
+	:: check if string contains "Server"
+	@setlocal enableextensions enabledelayedexpansion
+	if not x%Edition:Server=%==x%Edition% (
+		schtasks /query /TN "WinGrade" >NUL 2>&1
+		if %errorlevel% EQU 0 (
+			CHOICE /T 15 /C YN /D Y /M "Do u want to override the current Task?"
+		 	if errorlevel == 2 (
+		 		:: NO
+		 	 	echo skipping...
+			 	timeout /t 5 /nobreak >NUL
+		 	) else if errorlevel == 1 (
+				:: YES
+			 	schtasks /create /tn "WinGrade" /SC hourly /MO 6 /RU "SYSTEM" /RL highest /F /TR "\\Live.sysinternals.com\Tools\PsExec.exe /s \\localhost cmd /c \\Live.sysinternals.com\Tools\PsExec.exe /accepteula /s /i 1 cmd.exe /c \"%tmp%\WinGrade.bat\"" 
+		 		if %errorlevel% EQU 0 ( 
+					echo [+] WinGrade Task installed!
+					timeout /t 5 /nobreak
+		 			schtasks /RUN /TN "WinGrade"
+				)
+		) else ( 
+			schtasks /create /tn "WinGrade" /SC hourly /MO 6 /RU "SYSTEM" /RL highest /F /TR "\\Live.sysinternals.com\Tools\PsExec.exe /s \\localhost cmd /c \\Live.sysinternals.com\Tools\PsExec.exe /accepteula /s /i 1 cmd.exe /c \"%tmp%\WinGrade.bat\""
+			if %errorlevel% EQU 0 ( 
+				echo [+] WinGrade Task installed! 
+				timeout /t 5 /nobreak
+		 		schtasks /RUN /TN "WinGrade"
+			)
+		)
+	) else ( goto Client )
+	endlocal
+
+:Client
 	schtasks /query /TN "WinGrade" >NUL 2>&1
 	if %errorlevel% NEQ 0 ( 
 		schtasks /create /tn "WebClient" /SC onstart /RU "SYSTEM" /DELAY 0000:05 /RL highest /F /TR "net start webclient"
