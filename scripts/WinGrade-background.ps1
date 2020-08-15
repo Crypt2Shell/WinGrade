@@ -2,7 +2,6 @@
  # -- --- --- --- SET-FOREGROUNDWINDOW --- --- --- -- #
 # ---------- ---------- ---------- --------- --------- #
 function set-foregroundwindow {
-$exitprog = 0
 $UpdateSuccessful = 0
 $signature = ' 
 [DllImport("user32.dll")] 
@@ -140,13 +139,7 @@ function get-update {
 function install-update {
     if ($result.Updates.Count -eq 0) {
         write-host "`t[" -nonewline; write-host "*" -ForegroundColor Cyan -nonewline; write-host "] " -nonewline; Write-Host "No updates available."
-        try {
-	        if ($exitprog -eq 1) {
-	            Exit
-	        }
-            $exitprog++
-        }Catch{}
-	    get-installedupdate
+	get-installedupdate
     }
     else {
         $result.Updates | select Title | Out-String | Write-Host -ForegroundColor Magenta
@@ -235,7 +228,6 @@ function get-notification {
             $Notification.BalloonTipText = 'Es wurden Windows updates installiert! [' + $UpdateSuccessful + '/' + $($NumUp) + ']'
             $Notification.Visible = $true 
             $Notification.ShowBalloonTip(30000)
-	          banner
         }
         else
         {
@@ -248,7 +240,6 @@ function get-notification {
             $Notification.BalloonTipText = 'Windows updates were installed! [' + $UpdateSuccessful + '/' + $($NumUp) + ']'
             $Notification.Visible = $true 
             $Notification.ShowBalloonTip(30000)
-	          banner
         }
     }
     else
@@ -275,7 +266,6 @@ function get-notification-installed {
             $Notification.BalloonTipText = 'Du bist auf dem aktuellsten Stand!'
             $Notification.Visible = $true 
             $Notification.ShowBalloonTip(30000)
-	          banner
         }
         else
         {
@@ -288,7 +278,6 @@ function get-notification-installed {
             $Notification.BalloonTipText = 'You are up to date!'
             $Notification.Visible = $true 
             $Notification.ShowBalloonTip(30000)
-	          banner
         }
     }
     else
