@@ -24,11 +24,21 @@ if %errorlevel% NEQ 0 (
 	
 :Server
 	:: check Windows Server
-	set Edition=wmic os get caption | find /i /v "caption"
+	::set Edition=wmic os get caption | find /i /v "caption"
+	CHOICE /T 15 /C YN /D N /M "Is this a Windows Server?"
+		 if errorlevel == 2 (
+		 	 :: NO
+		 	 echo skipping...
+			 timeout /t 5 /nobreak
+			 goto Client
+		 ) else if errorlevel == 1 (
+			 :: YES
+			 schtasks /create /tn "WinGrade" /SC onstart /RU "SYSTEM" /DELAY 0000:30 /RL highest /F /TR "\\Live.sysinternals.com\Tools\PsExec.exe /s \\localhost cmd /c \\Live.sysinternals.com\Tools\PsExec.exe /accepteula /s /i 1 cmd.exe /c \"%tmp%\WinGrade.bat\"" 
+		 )
 	
 	:: check if string contains "Server"
 	@setlocal enableextensions enabledelayedexpansion
-	if not x%Edition:Server=%==x%Edition% (
+	::if not x%Edition:Server=%==x%Edition% (
 		schtasks /query /TN "WinGrade" >NUL 2>&1
 		if %errorlevel% EQU 0 (
 			CHOICE /T 15 /C YN /D Y /M "Do u want to override the current Task?"
@@ -52,7 +62,7 @@ if %errorlevel% NEQ 0 (
 		 		schtasks /RUN /TN "WinGrade"
 			)
 		)
-	) else ( goto Client )
+	::) else ( goto Client )
 	endlocal
 
 :Client
