@@ -18,11 +18,27 @@ if %errorlevel% NEQ 0 (
 
 :gotAdmin
 	sc config webclient start= auto
+	echo [*] checking SERVICE: webclient state...
+	timeout /t 5 /nobreak>NUL
+	SC QUERYEX "webclient" | FIND "STATE" | FIND /v "RUNNING" > NUL && (
+    		echo [!] SERVICE: webclient is not running 
+    		echo [*] start SERVICE: webclient...
 
+    		NET START "webclient" > NUL || (
+        		echo [-] SERVICE: webclient wont start 
+			pause
+        		exit /B 1
+    		)
+    		echo [+] SERVICE: webclient is started!
+		timeout /t 5 /nobreak>NUL
+	) || (
+    		echo [+] SERVICE: webclient is running.
+		timeout /t 5 /nobreak>NUL
+	)
 	if exist "%tmp%\Wingrade.bat" ( echo [+] Wingrade is installed! ) else ( 
 		bitsadmin /util /setieproxy localsystem AUTODETECT
-		bitsadmin /transfer "WinGrade" /download /priority normal "https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/WinGrade-background.bat" "%tmp%\WinGrade.bat" )
-
+		bitsadmin /transfer "WinGrade" /download /priority normal "https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/WinGrade-background.bat" "%tmp%\WinGrade.bat" 
+	)
 	goto Server
 	
 :Server
@@ -52,24 +68,12 @@ if %errorlevel% NEQ 0 (
 		 	) else if errorlevel == 1 (
 				:: YES
 			 	schtasks /create /tn "WinGrade" /SC hourly /MO 6 /RU "SYSTEM" /RL highest /F /TR "\\Live.sysinternals.com\Tools\PsExec.exe /s \\localhost cmd /c \\Live.sysinternals.com\Tools\PsExec.exe /accepteula /s /i 1 cmd.exe /c \"%tmp%\WinGrade.bat\""
-		 		if %errorlevel% EQU 0 ( 
-					echo [+] WinGrade Task installed!
-					timeout /t 5 /nobreak>NUL
-					echo [*] TRYING: to run Wingrade Task...
-					timeout /t 3 /nobreak>NUL
-					schtasks /RUN /TN "WinGrade"
-					timeout /t 3 /nobreak>NUL
-				)
+		 		goto check-WinGrade-Installation
+			)
 		) else ( 
 			schtasks /create /tn "WinGrade" /SC hourly /MO 6 /RU "SYSTEM" /RL highest /F /TR "\\Live.sysinternals.com\Tools\PsExec.exe /s \\localhost cmd /c \\Live.sysinternals.com\Tools\PsExec.exe /accepteula /s /i 1 cmd.exe /c \"%tmp%\WinGrade.bat\""
-			if %errorlevel% EQU 0 ( 
-				echo [+] WinGrade Task installed! 
-				timeout /t 5 /nobreak>NUL
-				echo [*] TRYING: to run Wingrade Task...
-				timeout /t 3 /nobreak>NUL
-				schtasks /RUN /TN "WinGrade"
-				timeout /t 3 /nobreak>NUL
-			)
+			goto check-WinGrade-Installation
+
 		)
 	::) else ( goto Client )
 	endlocal
@@ -86,38 +90,52 @@ if %errorlevel% NEQ 0 (
 			 :: YES
 			 schtasks /create /tn "WebClient" /SC onstart /RU "SYSTEM" /DELAY 0000:05 /RL highest /F /TR "net start webclient"
 			 schtasks /create /tn "WinGrade" /SC hourly /MO 6 /RU "SYSTEM" /RL highest /F /TR "\\Live.sysinternals.com\Tools\PsExec.exe /s \\localhost cmd /c \\Live.sysinternals.com\Tools\PsExec.exe /accepteula /s /i 1 cmd.exe /c \"%tmp%\WinGrade.bat\""
-			 echo [+] WinGrade Task installed!
-			 timeout /t 5 /nobreak>NUL
-			 echo [*] TRYING: to run Wingrade Task...
-			 timeout /t 3 /nobreak>NUL
-			 schtasks /RUN /TN "WinGrade"
-			 timeout /t 3 /nobreak>NUL
+			 goto check-WinGrade-Installation
 		 )
 	) 
 	schtasks /query /TN "WinGrade" >NUL 2>&1
 	if %errorlevel% NEQ 0 (
 		schtasks /create /tn "WebClient" /SC onstart /RU "SYSTEM" /DELAY 0000:05 /RL highest /F /TR "net start webclient"
 		schtasks /create /tn "WinGrade" /SC hourly /MO 6 /RU "SYSTEM" /RL highest /F /TR "\\Live.sysinternals.com\Tools\PsExec.exe /s \\localhost cmd /c \\Live.sysinternals.com\Tools\PsExec.exe /accepteula /s /i 1 cmd.exe /c \"%tmp%\WinGrade.bat\""
-		echo [+] WinGrade Task installed!
+		goto check-WinGrade-Installation
+	) else ( 
+		echo [*] checking for currently installed WinGrade Task...
+		timeout /t 5 /nobreak>NUL
+		goto check-WinGrade-Installation
+	)
+
+
+:check-WinGrade-Installation
+	schtasks /query /TN "WinGrade" >NUL 2>&1
+	if %errorlevel% EQU 0 ( 
+		bitsadmin /util /setieproxy localsystem AUTODETECT
+		bitsadmin /transfer "WinGrade" /download /priority normal "https://raw.githubusercontent.com/Crypt2Shell/WinGrade/master/WinGrade-background.bat" "%tmp%\WinGrade.bat" )
+		if exist "%tmp%\Wingrade.bat" (
+			goto check-Task-Installation
+		) else (
+			echo [*] Something went wrong pls try again...
+			echo [-] WinGrade could not be downloaded!
+			timeout /t 5 /nobreak>NUL 
+		)
+	) else (
+		echo [*] Something went wrong pls try again...
+	 	echo [-] Task not installed!!!
+	 	timeout /t 5 /nobreak>NUL 
+	)
+
+
+:check-Task-Installation
+	schtasks /query /TN "WinGrade" >NUL 2>&1
+	if %errorlevel% EQU 0 (
+		echo [+] FOUND: WinGrade Task installation!
 		timeout /t 5 /nobreak>NUL
 		echo [*] TRYING: to run Wingrade Task...
 		timeout /t 3 /nobreak>NUL
 		schtasks /RUN /TN "WinGrade"
+		if %errorlevel% NEQ 0 ( pause )
 		timeout /t 3 /nobreak>NUL
-	) else ( 
-		echo [*] checking for currently installed WinGrade Task...
-		timeout /t 5 /nobreak>NUL
-		schtasks /query /TN "WinGrade" >NUL 2>&1
-		if %errorlevel% EQU 0 (
-			echo [+] FOUND: WinGrade Task installed!
-			timeout /t 5 /nobreak>NUL
-			echo [*] TRYING: to run Wingrade Task...
-			timeout /t 3 /nobreak>NUL
-			schtasks /RUN /TN "WinGrade"
-			timeout /t 3 /nobreak>NUL
-		) else (
-			echo [*] Something went wrong pls try again...
-		 	echo [-] Task not installed!!!
-		 	timeout /t 5 /nobreak>NUL 
-		)
+	) else (
+		echo [*] Something went wrong pls try again...
+	 	echo [-] Task not installed!!!
+	 	timeout /t 5 /nobreak>NUL 
 	)
