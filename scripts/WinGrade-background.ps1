@@ -84,6 +84,7 @@ try{[Win32.NativeMethods]::SetWindowLongPtr($hwnd, $GWL_EXSTYLE, $WS_EX_TOOLWIND
 [Win32.NativeMethods]::ShowWindowAsync($hwnd, 0) | Out-Null
 # Disable Window itself
 [Win32.NativeMethods]::EnableWindow($hwnd, 0) | Out-Null
+banner
 }
 # ---------- ---------- ---------- --------- --------- #
  # --- --- --- --- --- Banner --- --- --- --- --- --- #
