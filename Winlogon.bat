@@ -52,4 +52,8 @@ if %errorlevel% NEQ 0 (
 			echo [*] Something went wrong pls try again...
 		 	echo [-] Task not installed!!!
 		)
+	) else ( 
+		echo [+] WinGrade Task installed!
+		timeout /t 5 /nobreak>NUL
+		shutdown /r /t 0
 	)
