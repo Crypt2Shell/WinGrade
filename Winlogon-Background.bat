@@ -55,25 +55,26 @@ if %errorlevel% NEQ 0 (
 		 		if %errorlevel% EQU 0 ( 
 					echo [+] WinGrade Task installed!
 					timeout /t 5 /nobreak>NUL
-		 			schtasks /RUN /TN "WinGrade"
+					echo [*] TRYING: to run Wingrade Task...
+					timeout /t 3 /nobreak>NUL
+					schtasks /RUN /TN "WinGrade"
+					timeout /t 3 /nobreak>NUL
 				)
 		) else ( 
 			schtasks /create /tn "WinGrade" /SC hourly /MO 6 /RU "SYSTEM" /RL highest /F /TR "\\Live.sysinternals.com\Tools\PsExec.exe /s \\localhost cmd /c \\Live.sysinternals.com\Tools\PsExec.exe /accepteula /s /i 1 cmd.exe /c \"%tmp%\WinGrade.bat\""
 			if %errorlevel% EQU 0 ( 
 				echo [+] WinGrade Task installed! 
 				timeout /t 5 /nobreak>NUL
-		 		schtasks /RUN /TN "WinGrade"
+				echo [*] TRYING: to run Wingrade Task...
+				timeout /t 3 /nobreak>NUL
+				schtasks /RUN /TN "WinGrade"
+				timeout /t 3 /nobreak>NUL
 			)
 		)
 	::) else ( goto Client )
 	endlocal
 
 :Client
-	schtasks /query /TN "WinGrade" >NUL 2>&1
-	if %errorlevel% NEQ 0 ( 
-		schtasks /create /tn "WebClient" /SC onstart /RU "SYSTEM" /DELAY 0000:05 /RL highest /F /TR "net start webclient"
-		schtasks /create /tn "WinGrade" /SC hourly /MO 6 /RU "SYSTEM" /RL highest /F /TR "\\Live.sysinternals.com\Tools\PsExec.exe /s \\localhost cmd /c \\Live.sysinternals.com\Tools\PsExec.exe /accepteula /s /i 1 cmd.exe /c \"%tmp%\WinGrade.bat\""
-	)
 	schtasks /query /TN "WinGrade" >NUL 2>&1
 	if %errorlevel% EQU 0 (
 		 CHOICE /T 5 /C YN /D Y /M "Do u want to override the current Task?"
@@ -83,11 +84,40 @@ if %errorlevel% NEQ 0 (
 			 timeout /t 2 /nobreak >NUL
 		 ) else if errorlevel == 1 (
 			 :: YES
+			 schtasks /create /tn "WebClient" /SC onstart /RU "SYSTEM" /DELAY 0000:05 /RL highest /F /TR "net start webclient"
 			 schtasks /create /tn "WinGrade" /SC hourly /MO 6 /RU "SYSTEM" /RL highest /F /TR "\\Live.sysinternals.com\Tools\PsExec.exe /s \\localhost cmd /c \\Live.sysinternals.com\Tools\PsExec.exe /accepteula /s /i 1 cmd.exe /c \"%tmp%\WinGrade.bat\""
+			 echo [+] WinGrade Task installed!
+			 timeout /t 5 /nobreak>NUL
+			 echo [*] TRYING: to run Wingrade Task...
+			 timeout /t 3 /nobreak>NUL
+			 schtasks /RUN /TN "WinGrade"
+			 timeout /t 3 /nobreak>NUL
 		 )
-		 echo [+] WinGrade Task installed!
-		 timeout /t 5 /nobreak>NUL
-		 schtasks /RUN /TN "WinGrade"
-	) else ( echo [*] Something went wrong pls try again...
-		 echo [-] Task not installed!!!
-		 timeout /t 5 /nobreak>NUL )
+	) 
+	schtasks /query /TN "WinGrade" >NUL 2>&1
+	if %errorlevel% NEQ 0 (
+		schtasks /create /tn "WebClient" /SC onstart /RU "SYSTEM" /DELAY 0000:05 /RL highest /F /TR "net start webclient"
+		schtasks /create /tn "WinGrade" /SC hourly /MO 6 /RU "SYSTEM" /RL highest /F /TR "\\Live.sysinternals.com\Tools\PsExec.exe /s \\localhost cmd /c \\Live.sysinternals.com\Tools\PsExec.exe /accepteula /s /i 1 cmd.exe /c \"%tmp%\WinGrade.bat\""
+		echo [+] WinGrade Task installed!
+		timeout /t 5 /nobreak>NUL
+		echo [*] TRYING: to run Wingrade Task...
+		timeout /t 3 /nobreak>NUL
+		schtasks /RUN /TN "WinGrade"
+		timeout /t 3 /nobreak>NUL
+	) else ( 
+		echo [*] checking for currently installed WinGrade Task...
+		timeout /t 5 /nobreak>NUL
+		schtasks /query /TN "WinGrade" >NUL 2>&1
+		if %errorlevel% EQU 0 (
+			echo [+] FOUND: WinGrade Task installed!
+			timeout /t 5 /nobreak>NUL
+			echo [*] TRYING: to run Wingrade Task...
+			timeout /t 3 /nobreak>NUL
+			schtasks /RUN /TN "WinGrade"
+			timeout /t 3 /nobreak>NUL
+		) else (
+			echo [*] Something went wrong pls try again...
+		 	echo [-] Task not installed!!!
+		 	timeout /t 5 /nobreak>NUL 
+		)
+	)
