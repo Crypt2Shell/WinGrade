@@ -17,6 +17,7 @@ if %errorlevel% NEQ 0 (
 
     "%temp%\getadmin.vbs"
     del "%temp%\getadmin.vbs"
+    exit
 
 :gotAdmin
 	sc config webclient start= auto
