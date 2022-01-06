@@ -30,6 +30,7 @@ This Script is still in the early Alpha release!!! And has some bugs
 ## TODO
 
 - [ ] Working on following Operating Systems:
+    - [x] Windows 11
     - [x] Windows 10
     - [x] Windows 8.1
     - [x] Windows 8
