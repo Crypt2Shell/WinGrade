@@ -17,6 +17,7 @@ Tested on following Operating Systems:
 
 |   Operating System        |  x64  |  x86  |
 | :---                      | :---: | :---: |
+|         Windows 11        |  <ul><li>- [x] ✓</li></ul>  |  <ul><li>- [x] ✓</li></ul>  |
 |         Windows 10        |  <ul><li>- [x] ✓</li></ul>  |  <ul><li>- [x] ✓</li></ul>  |
 |         Windows 8.1       |  <ul><li>- [ ] ✘</li></ul>  |  <ul><li>- [ ] ✘</li></ul>  |
 |         Windows 8         |  <ul><li>- [ ] ✘</li></ul>  |  <ul><li>- [ ] ✘</li></ul>  |
